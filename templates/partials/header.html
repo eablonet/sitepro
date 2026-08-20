@@ -1,0 +1,85 @@
+{% load static %}
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="{% url 'contenus:accueil' %}" class="site-header__logo"><img src="{% static 'img/logo.svg' %}" alt="TSI1" class="site-header__logo-img" /></a>
+
+    <nav class="site-nav" aria-label="Navigation principale">
+      <div class="nav-item nav-item--dropdown">
+        <a href="{% url 'contenus:liste_cours' %}" class="site-nav__link site-nav__link--trigger{% if request.resolver_match.url_name == 'liste_cours' %} site-nav__link--active{% endif %}">
+          Cours
+          <i class="ti ti-chevron-down"></i>
+        </a>
+        <div class="dropdown-panel">
+          {% for theme in themes_nav %}
+            <a href="{% url 'contenus:liste_cours' %}?theme={{ theme.slug }}" class="dropdown-panel__item">
+              <i class="ti ti-file"></i>
+              {{ theme.nom }}
+            </a>
+          {% empty %}
+            <span class="dropdown-panel__item dropdown-panel__item--empty">Aucun thème</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <a href="{% url 'contenus:liste_tp' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_tp' %} site-nav__link--active{% endif %}">TP</a>
+      <div class="nav-item nav-item--dropdown">
+        <a href="{% url 'contenus:liste_devoirs' %}" class="site-nav__link site-nav__link--trigger{% if request.resolver_match.url_name == 'liste_devoirs' %} site-nav__link--active{% endif %}">
+          Devoirs
+          <i class="ti ti-chevron-down"></i>
+        </a>
+        <div class="dropdown-panel">
+          {% for type_value, type_label in types_devoir_nav %}
+            <a href="{% url 'contenus:liste_devoirs' %}?type={{ type_value }}" class="dropdown-panel__item">
+              <i class="ti ti-file"></i>
+              {{ type_label }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{% url 'contenus:liste_fiches_outils' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_fiches_outils' %} site-nav__link--active{% endif %}">Fiches outils</a>
+
+      <span class="site-nav__divider"></span>
+
+      <a href="{% url 'contenus:archives' %}" class="site-nav__link{% if request.resolver_match.url_name == 'archives' %} site-nav__link--active{% endif %}">Archives</a>
+    </nav>
+
+    <div class="site-header__actions">
+      <button type="button" class="icon-button" aria-label="Rechercher"><i class="ti ti-search"></i></button>
+      <button type="button" class="icon-button" id="burger-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-nav"><i class="ti ti-menu-2"></i></button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    <div class="mobile-nav__accordion">
+      <button type="button" class="mobile-nav__accordion-trigger" id="mobile-cours-trigger" aria-expanded="false" aria-controls="mobile-cours-panel">
+        Cours
+        <i class="ti ti-chevron-down"></i>
+      </button>
+      <div class="mobile-nav__accordion-panel" id="mobile-cours-panel" hidden>
+        {% for theme in themes_nav %}
+          <a href="{% url 'contenus:liste_cours' %}?theme={{ theme.slug }}" class="mobile-nav__sublink">{{ theme.nom }}</a>
+        {% empty %}
+          <span class="mobile-nav__sublink mobile-nav__sublink--empty">Aucun thème</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <a href="{% url 'contenus:liste_tp' %}" class="mobile-nav__link">TP <i class="ti ti-chevron-right"></i></a>
+    <div class="mobile-nav__accordion">
+        <button type="button" class="mobile-nav__accordion-trigger" id="mobile-devoirs-trigger" aria-expanded="false" aria-controls="mobile-devoirs-panel">
+            Devoirs
+            <i class="ti ti-chevron-down"></i>
+        </button>
+        <div class="mobile-nav__accordion-panel" id="mobile-devoirs-panel" hidden>
+            {% for type_value, type_label in types_devoir_nav %}
+                <a href="{% url 'contenus:liste_devoirs' %}?type={{ type_value }}" class="mobile-nav__sublink">{{ type_label }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="{% url 'contenus:liste_fiches_outils' %}" class="mobile-nav__link">Fiches outils <i class="ti ti-chevron-right"></i></a>
+
+    <div class="mobile-nav__divider"></div>
+
+    <a href="{% url 'contenus:archives' %}" class="mobile-nav__link">Archives <i class="ti ti-chevron-right"></i></a>
+  </div>
+</header>

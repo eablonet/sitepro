@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Fiches outils{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Fiches outils</h1>
+<p class="page-intro">Formulaires, méthodes et ressources pratiques.</p>
+
+<div class="cartes-doc-grid">
+    {% for fiche in fiches %}
+        <article class="carte-doc">
+            <div class="carte-doc__header">
+                <h3 class="carte-doc__titre">{{ fiche.titre }}</h3>
+                <div class="carte-doc__docs-principaux">
+                    {% for fichier in fiche.fichiers.all %}
+                        <a href="{{ fichier.fichier.url }}" class="doc-icone" title="{{ fichier.legende|default:'Fichier' }}">
+                            <i class="ti ti-file"></i>
+                            <span>{{ fichier.legende|default:"Fichier"|truncatechars:8 }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if fiche.description %}
+                <p class="carte-doc__description">{{ fiche.description|truncatewords:25|urlize }}</p>
+            {% endif %}
+        </article>
+    {% empty %}
+        <p>Aucune fiche outil publiée pour le moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

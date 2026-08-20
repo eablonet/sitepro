@@ -1,0 +1,273 @@
+/* ============================================================
+   DESIGN TOKENS — Site de cours
+   Palette : Vert forêt | Typographie : DM Sans + Inter
+   ============================================================ */
+/* Reset - ne pas inclure les commandes du navigateur */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ------------------------------------------------------------
+   1. IMPORTS DES POLICES
+   Chargement depuis Google Fonts.
+   DM Sans : titres (h1, h2, h3)
+   Inter    : corps de texte, UI, métadonnées
+   On charge uniquement les graisses utilisées (400 et 500)
+   pour éviter de surcharger le chargement de la page.
+   
+   À importer depuis le base.html /!\
+   ------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------
+   2. VARIABLES GLOBALES
+   Toutes les décisions de design centralisées ici.
+   Modifier une valeur ici la propage sur tout le site.
+   ------------------------------------------------------------ */
+:root {
+
+    /* ----------------------------------------------------------
+     2a. COULEURS — FONDS
+     Trois niveaux de fond qui créent la hiérarchie visuelle
+     sans avoir besoin de bordures ou d'ombres partout.
+     ---------------------------------------------------------- */
+
+    --bg-page: #F4F6F4;
+    /* Fond de toutes les pages (body).
+     Légèrement verdâtre, jamais blanc pur — réduit la fatigue
+     visuelle lors des longues sessions de lecture. */
+
+    --bg-card: #FFFFFF;
+    /* Fond des cartes (cours, TP, DS, TD).
+     Le contraste blanc / fond verdâtre suffit à faire ressortir
+     les cartes même sans bordure agressive. */
+
+    --bg-subtle: #EDF0ED;
+    /* Fond des éléments de second plan : chips de filtre inactifs,
+     lignes alternées dans l'archive, encadrés de note.
+     Un cran plus foncé que bg-page, jamais utilisé pour du
+     texte long. */
+
+
+    /* ----------------------------------------------------------
+     2b. COULEURS — TEXTE
+     Trois niveaux de texte qui créent la hiérarchie de lecture.
+     Règle absolue : ne jamais utiliser text-primary pour du
+     corps de texte long — réservé aux titres uniquement.
+     ---------------------------------------------------------- */
+
+    --text-primary: #1E2E1E;
+    /* Titres de page (h1, h2), titres de cartes, texte de
+     navigation. Tout ce qui doit être lu en premier. */
+
+    --text-secondary: #4A5E4A;
+    /* Corps de texte, descriptions de cartes, contenu principal.
+     Légèrement plus clair que text-primary pour créer une
+     hiérarchie naturelle sans effort. */
+
+    --text-muted: #7A917A;
+    /* Métadonnées discrètes : labels de filtres inactifs,
+     placeholders des champs de recherche, légendes, footer.
+     Jamais utilisé pour du contenu important. */
+
+
+    /* ----------------------------------------------------------
+     2c. COULEURS — ACCENT (vert)
+     Le vert est la SEULE couleur d'interaction du site.
+     Règle : si un élément est en couleur accent, il doit être
+     cliquable. Ne jamais utiliser accent comme décoration.
+     ---------------------------------------------------------- */
+
+    --accent: #2E7D52;
+    /* Liens cliquables, boutons primaires (télécharger PDF,
+     voir le cours), item actif dans la nav, filtre sélectionné.
+     État repos uniquement. */
+
+    --accent-hover: #236040;
+    /* État hover et focus des éléments accent.
+     Jamais utilisé à l'état repos — uniquement en CSS
+     :hover et :focus-visible. */
+
+    --accent-subtle: #E8F5EE;
+    /* Fond du chip de filtre actif, fond du badge de section
+     en cours dans la nav, fond de la ligne survolée dans
+     l'archive. Toujours associé à du texte --accent par-dessus,
+     jamais seul. */
+
+
+    /* ----------------------------------------------------------
+     2d. COULEURS — BORDURES
+     Deux niveaux de bordure selon l'importance de l'élément.
+     Toujours en 0.5px — des bordures plus épaisses alourdissent
+     l'interface.
+     ---------------------------------------------------------- */
+
+    --border: #D4DDD4;
+    /* Bordure par défaut : cartes, séparateurs entre sections,
+     contour des inputs au repos. Très discret. */
+
+    --border-strong: #B0C4B0;
+    /* Bordure renforcée : hover des cartes, contour des inputs
+     en focus (avant le ring vert), séparateur du header. */
+
+
+    /* ----------------------------------------------------------
+     2e. COULEURS — STATUT
+     Une seule couleur de statut pour la v1.
+     Ne pas ajouter de couleur success ou warning avant d'en
+     avoir un besoin réel — chaque couleur supplémentaire
+     affaiblit les autres.
+     ---------------------------------------------------------- */
+
+    --danger: #C0392B;
+    /* Messages d'erreur uniquement : document introuvable,
+     erreur de chargement PDF. Jamais utilisé comme décoration
+     ou pour attirer l'attention sur autre chose qu'une erreur. */
+
+
+    /* ----------------------------------------------------------
+     2f. TYPOGRAPHIE — FAMILLES
+     ---------------------------------------------------------- */
+
+    --font-title: 'DM Sans', sans-serif;
+    /* Utilisée uniquement pour les titres (h1, h2, h3).
+     Ne pas l'utiliser pour du corps de texte ou des labels UI —
+     le mélange trop fréquent casse la cohérence. */
+
+    --font-body: 'Inter', sans-serif;
+    /* Utilisée pour tout le reste : corps, navigation, boutons,
+     labels, métadonnées. Conçue spécifiquement pour les
+     écrans, excellente lisibilité à toutes les tailles. */
+
+
+    /* ----------------------------------------------------------
+     2g. TYPOGRAPHIE — NIVEAUX
+     Syntaxe : font-weight font-size/line-height font-family
+     Line-height en valeur sans unité (ratio) — plus robuste
+     que des valeurs en px qui cassent quand on zoome.
+     Plancher absolu : 12px. En dessous, accessibilité dégradée.
+     ---------------------------------------------------------- */
+
+    --text-h1: 500 32px/1.2 var(--font-title);
+    /* Titre principal de page. Une seule occurrence par page :
+     hero de l'accueil, titre de la page archive.
+     Couleur : text-primary. */
+
+    --text-h2: 500 22px/1.3 var(--font-title);
+    /* Titre de section : "Derniers ajouts", "Thème : Algèbre".
+     Peut apparaître plusieurs fois par page.
+     Couleur : text-primary. */
+
+    --text-h3: 500 16px/1.4 var(--font-title);
+    /* Titre de carte : nom du chapitre dans une carte cours,
+     TP ou DS. Doit rester lisible dans la grille compacte.
+     Couleur : text-primary. */
+
+    --text-body: 400 15px/1.7 var(--font-body);
+    /* Corps de texte principal : descriptions de cartes, contenu
+     des pages. Line-height 1.7 pour faciliter la lecture longue.
+     Couleur : text-secondary. */
+
+    --text-ui: 400 13px/1.6 var(--font-body);
+    /* Texte interactif : navigation, labels de filtres, liens dans
+     les cartes, texte des boutons. Pas destiné à être lu
+     longuement. Couleur : text-secondary. */
+
+    --text-meta: 400 12px/1.5 var(--font-body);
+    /* Métadonnées et annotations : badges, footer, informations
+     secondaires. Valeur plancher — ne pas descendre en dessous.
+     Couleur : text-muted. */
+
+
+    /* ----------------------------------------------------------
+     2h. ESPACEMENT
+     Tout est multiple de 4px — unité de base du système.
+     Les petits espacements (xs, sm, md) sont fixes sur tous
+     les appareils. Seuls lg et xl s'adaptent (voir media
+     queries ci-dessous).
+     ---------------------------------------------------------- */
+
+    --space-xs: 4px;
+    /* Espace micro : entre une icône et son label, entre un badge
+     et son texte. Jamais utilisé pour séparer des blocs. */
+
+    --space-sm: 8px;
+    /* Espace petit : entre le titre et la description dans une
+     carte, entre deux éléments de navigation. */
+
+    --space-md: 16px;
+    /* Espace moyen : gap entre les cartes dans la grille, padding
+     horizontal interne des cartes. Valeur la plus utilisée. */
+
+    --space-lg: 32px;
+    /* Espace grand : padding vertical interne des cartes, espace
+     entre deux sections de page. Réduit sur mobile (voir
+     media queries). */
+
+    --space-xl: 64px;
+    /* Espace très grand : espace entre le header et le premier
+     bloc de contenu, marges verticales entre sections majeures.
+     Réduit significativement sur mobile. */
+
+
+    /* ----------------------------------------------------------
+     2i. MISE EN PAGE
+     ---------------------------------------------------------- */
+
+    --page-margin: 40px;
+    /* Marge latérale entre le bord de l'écran et le contenu.
+     Valeur desktop et tablette. Réduite sur mobile. */
+
+    --max-width: 1100px;
+    /* Largeur maximale du conteneur de page.
+     Au-delà de 1100px, le contenu ne s'élargit plus —
+     ce sont les marges qui grandissent.
+     Empêche les lignes de texte de devenir illisibles sur
+     les grands écrans. */
+
+    --radius: 8px;
+    /* Rayon des coins arrondis des cartes et des composants UI.
+     Assez arrondi pour être moderne, pas assez pour faire
+     "application mobile ludique". */
+
+}
+
+
+/* ------------------------------------------------------------
+   3. ADAPTATIONS MOBILE
+   On ne redéfinit que ce qui change — les petits espacements
+   (xs, sm, md) et le radius restent identiques.
+   Breakpoint 768px = limite conventionnelle mobile/tablette.
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+    :root {
+        --space-lg: 24px;
+        /* Réduit de 32px → 24px */
+        --space-xl: 32px;
+        /* Réduit de 64px → 32px */
+        --page-margin: 20px;
+        /* Marges latérales plus serrées */
+    }
+}
+
+
+/* ------------------------------------------------------------
+   4. ADAPTATIONS TABLETTE
+   Entre 769px et 1024px — valeurs intermédiaires.
+   ------------------------------------------------------------ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --space-lg: 28px;
+        /* Intermédiaire entre mobile et desktop */
+        --space-xl: 48px;
+        /* Intermédiaire entre mobile et desktop */
+        --page-margin: 40px;
+        /* Même que desktop */
+    }
+}

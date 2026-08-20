@@ -1,0 +1,33 @@
+/* ============================================================
+   DOC-ICONE — bouton icône + libellé (Sujet, Corrigé, TD...)
+   Utilisé dans toutes les cartes de type "document".
+   ============================================================ */
+
+.doc-icone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 52px;
+  padding: var(--space-xs) 0;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text-muted);
+  font: var(--text-meta);
+}
+
+.doc-icone i {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.doc-icone:hover {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.doc-icone:hover i,
+.doc-icone:hover span {
+  color: var(--accent);
+}

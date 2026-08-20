@@ -1,0 +1,115 @@
+/* ============================================================
+   ARCHIVES — navigation à deux niveaux (années + onglets)
+   Chargé uniquement sur la page archives via extra_css.
+   ============================================================ */
+
+.archives-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+/* --- Colonne des années (desktop) --- */
+.archives-annees {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.archives-annee {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 10px var(--space-sm);
+    border-radius: var(--radius);
+}
+
+.archives-annee:hover {
+    background: var(--bg-subtle);
+}
+
+.archives-annee--active {
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.archives-annee__chevron {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.archives-annee--active .archives-annee__chevron {
+    color: var(--accent);
+}
+
+/* --- Onglets Cours / TP / Devoirs / Fiches outils --- */
+.archive-tabs {
+    display: flex;
+    gap: var(--space-md);
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: var(--space-lg);
+}
+
+.archive-tab {
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: var(--space-sm) 2px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.archive-tab:hover {
+    color: var(--accent);
+}
+
+.archive-tab--active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 500;
+}
+
+/* --- Bascule tablette/mobile : sidebar → chips scrollables --- */
+@media (max-width: 1024px) {
+    .archives-layout {
+        display: block;
+    }
+
+    .archives-annees {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: var(--space-sm);
+        padding-bottom: var(--space-sm);
+        margin-bottom: var(--space-lg);
+        /* Masque la barre de scroll sur la plupart des navigateurs, garde le scroll fonctionnel */
+        scrollbar-width: none;
+    }
+
+    .archives-annees::-webkit-scrollbar {
+        display: none;
+    }
+
+    .archives-annee {
+        flex-shrink: 0;
+        background: var(--bg-subtle);
+        border: 0.5px solid var(--border);
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    .archives-annee--active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #FFFFFF;
+    }
+
+    .archives-annee__chevron {
+        display: none;
+    }
+}

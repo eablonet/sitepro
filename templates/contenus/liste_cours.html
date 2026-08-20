@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Cours
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">Cours</h1>
+  <p class="page-intro">Tous les chapitres du programme, classés par thème.</p>
+
+  <div class="chips">
+    <a href="{% url 'contenus:liste_cours' %}" class="chip{% if not theme_actif %} chip--active{% endif %}">Tous</a>
+    {% for theme in themes %}
+      <a href="?theme={{ theme.slug }}" class="chip{% if theme_actif == theme %} chip--active{% endif %}">{{ theme.nom }}</a>
+    {% endfor %}
+  </div>
+
+  {% for groupe in cours_par_theme %}
+    <section class="theme-section">
+      <h2 class="section-title">{{ groupe.theme.nom }}</h2>
+      <div class="cartes-doc-grid">
+        {% for cours in groupe.cours_liste %}
+          <article class="carte-doc">
+            <div class="carte-doc__header">
+              <h3 class="carte-doc__titre">{{ cours.titre }}</h3>
+              <div class="carte-doc__docs-principaux">
+                <a href="{{ cours.fichier_accompagnement.url }}" class="doc-icone" title="Document d'accompagnement">
+                  <i class="ti ti-file"></i>
+                  <span>Cours</span>
+                </a>
+                <a href="{{ cours.fichier_td.url }}" class="doc-icone" title="Feuille de TD">
+                  <i class="ti ti-file"></i>
+                  <span>TD</span>
+                </a>
+              </div>
+            </div>
+
+            {% if cours.description %}
+              <p class="carte-doc__description">{{ cours.description|truncatewords:25|urlize }}</p>
+            {% endif %}
+
+            {% if cours.documents_lies %}
+              <div class="carte-doc__divider"></div>
+              <details class="carte-doc__lies">
+                <summary class="carte-doc__lies-label">
+                  <span><i class="ti ti-link"></i> Documents liés</span>
+                  <i class="ti ti-chevron-down carte-doc__lies-chevron"></i>
+                </summary>
+                <div class="carte-doc__lies-liste">
+                  {% for doc in cours.documents_lies %}
+                    <a href="{{ doc.fichier_sujet.url }}" class="carte-doc__lie-item">
+                      <span class="carte-doc__lie-item-label">
+                        <i class="ti ti-file"></i>
+                        {{ doc.titre }}
+                      </span>
+                      <i class="ti ti-arrow-right"></i>
+                    </a>
+                  {% endfor %}
+                </div>
+              </details>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% empty %}
+    <p>Aucun cours publié pour le moment.</p>
+  {% endfor %}
+{% endblock %}

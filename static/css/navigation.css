@@ -1,0 +1,215 @@
+/* ============================================================
+   NAVIGATION — header, nav desktop, dropdown, menu mobile
+   ============================================================ */
+
+.site-header {
+    border-bottom: 0.5px solid var(--border);
+    padding-top: var(--space-md);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-md);
+}
+
+.site-header__logo {
+    display: flex;
+    align-items: center;
+}
+
+.site-header__logo-img {
+    display: block;
+    height: 40px;
+    width: auto;
+}
+
+/* --- Nav desktop --- */
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.nav-item--dropdown {
+    position: relative;
+}
+
+.site-nav__link {
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius);
+}
+
+.site-nav__link:hover {
+    color: var(--accent);
+}
+
+.site-nav__link--active {
+    color: var(--accent);
+    background: var(--accent-subtle);
+}
+
+.site-nav__divider {
+    width: 0.5px;
+    height: 14px;
+    background: var(--border-strong);
+}
+
+/* --- Dropdown "Cours" (desktop) --- */
+.dropdown-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-xs);
+    box-shadow: 0 4px 12px rgba(30, 46, 30, 0.08);
+    z-index: 10;
+}
+
+.nav-item--dropdown:hover .dropdown-panel,
+.nav-item--dropdown:focus-within .dropdown-panel {
+    display: block;
+}
+
+.dropdown-panel__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+}
+
+.dropdown-panel__item:hover {
+    background: var(--accent-subtle);
+    color: var(--accent);
+}
+
+.dropdown-panel__item--empty {
+    color: var(--text-muted);
+    cursor: default;
+}
+
+/* --- Actions tablette/mobile (recherche + burger) --- */
+.site-header__actions {
+    display: none;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.icon-button:hover {
+    color: var(--accent);
+}
+
+/* --- Panneau mobile --- */
+.mobile-nav {
+    border-top: 0.5px solid var(--border);
+    padding: var(--space-md) var(--page-margin);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mobile-nav[hidden] {
+    display: none;
+}
+
+.mobile-nav__link,
+.mobile-nav__accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px var(--space-sm);
+    border-radius: var(--radius);
+}
+
+.mobile-nav__link:hover,
+.mobile-nav__accordion-trigger:hover {
+    background: var(--bg-subtle);
+}
+
+.mobile-nav__accordion-trigger--open i {
+    transform: rotate(180deg);
+}
+
+.mobile-nav__accordion-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px var(--space-sm) 6px 28px;
+}
+
+.mobile-nav__accordion-panel[hidden] {
+    display: none;
+}
+
+.mobile-nav__sublink {
+    font: var(--text-ui);
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 4px 0;
+}
+
+.mobile-nav__sublink:hover {
+    color: var(--accent);
+}
+
+.mobile-nav__sublink--empty {
+    color: var(--text-muted);
+}
+
+.mobile-nav__divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: var(--space-sm) 0;
+}
+
+/* --- Bascule desktop / tablette-mobile --- */
+@media (max-width: 1024px) {
+    .site-nav {
+        display: none;
+    }
+
+    .site-header__actions {
+        display: flex;
+    }
+}
+
+@media (min-width: 1025px) {
+    .mobile-nav {
+        display: none !important;
+    }
+}

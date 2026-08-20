@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Bienvenue</h1>
+<p class="page-intro">Retrouvez ici les derniers cours, TP et devoirs publiés.</p>
+
+<h2 class="section-title">Derniers ajouts</h2>
+
+<div class="cartes-doc-grid">
+    {% for item in derniers_contenus %}
+        <article class="carte-doc">
+            <span class="badge">
+                {% if item.type_contenu == 'cours' %}Cours
+                {% elif item.type_contenu == 'tp' %}TP
+                {% elif item.type_contenu == 'devoir' %}{{ item.get_type_display }}
+                {% elif item.type_contenu == 'fiche' %}Fiche outil
+                {% endif %}
+            </span>
+
+            <div class="carte-doc__header">
+                <h3 class="carte-doc__titre">{{ item.titre }}</h3>
+                <div class="carte-doc__docs-principaux">
+                    {% if item.type_contenu == 'cours' %}
+                        <a href="{{ item.fichier_accompagnement.url }}" class="doc-icone" title="Document d'accompagnement">
+                            <i class="ti ti-file"></i><span>Résumé</span>
+                        </a>
+                        <a href="{{ item.fichier_td.url }}" class="doc-icone" title="Feuille de TD">
+                            <i class="ti ti-file"></i><span>TD</span>
+                        </a>
+                    {% elif item.type_contenu == 'tp' %}
+                        <a href="{{ item.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                            <i class="ti ti-file"></i><span>Sujet</span>
+                        </a>
+                        {% if item.fichier_corrige %}
+                            <a href="{{ item.fichier_corrige.url }}" class="doc-icone" title="Corrigé">
+                                <i class="ti ti-file"></i><span>Corrigé</span>
+                            </a>
+                        {% endif %}
+                    {% elif item.type_contenu == 'devoir' %}
+                        <a href="{{ item.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                            <i class="ti ti-file"></i><span>Sujet</span>
+                        </a>
+                        {% if item.fichier_correction %}
+                            <a href="{{ item.fichier_correction.url }}" class="doc-icone" title="Correction">
+                                <i class="ti ti-file"></i><span>Corr.</span>
+                            </a>
+                        {% endif %}
+                    {% elif item.type_contenu == 'fiche' %}
+                        {% for fichier in item.fichiers.all %}
+                            <a href="{{ fichier.fichier.url }}" class="doc-icone" title="{{ fichier.legende|default:'Fichier' }}">
+                                <i class="ti ti-file"></i><span>{{ fichier.legende|default:"Fichier"|truncatechars:8 }}</span>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if item.description %}
+                <p class="carte-doc__description">{{ item.description|truncatewords:20|urlize }}</p>
+            {% endif %}
+
+            <div class="carte-doc__divider"></div>
+            <p class="carte-doc__meta">{{ item.date_publication|date:"d/m/Y" }}</p>
+        </article>
+    {% empty %}
+        <p>Aucun contenu publié pour le moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

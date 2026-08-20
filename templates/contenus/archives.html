@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Archives{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/archives.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Archives</h1>
+<p class="page-intro">Consultez les contenus des années scolaires précédentes.</p>
+
+{% if not annees %}
+    <p>Aucune archive disponible pour le moment.</p>
+{% else %}
+
+    <div class="archives-layout">
+
+        <nav class="archives-annees" aria-label="Années archivées">
+            {% for annee in annees %}
+                <a href="{% url 'contenus:archives' annee.nom %}?type={{ type_actif }}"
+                   class="archives-annee{% if annee == annee_active %} archives-annee--active{% endif %}">
+                    <span>{{ annee.nom }}</span>
+                    <i class="ti ti-chevron-right archives-annee__chevron"></i>
+                </a>
+            {% endfor %}
+        </nav>
+
+        <div class="archives-contenu">
+
+            <div class="archive-tabs" role="tablist">
+                <a href="?type=cours" class="archive-tab{% if type_actif == 'cours' %} archive-tab--active{% endif %}">Cours</a>
+                <a href="?type=tp" class="archive-tab{% if type_actif == 'tp' %} archive-tab--active{% endif %}">TP</a>
+                <a href="?type=devoirs" class="archive-tab{% if type_actif == 'devoirs' %} archive-tab--active{% endif %}">Devoirs</a>
+                <a href="?type=fiches" class="archive-tab{% if type_actif == 'fiches' %} archive-tab--active{% endif %}">Fiches outils</a>
+            </div>
+
+            {% if type_actif == 'cours' %}
+                {% for groupe in cours_par_theme %}
+                    <section class="theme-section">
+                        <h2 class="section-title">{{ groupe.theme.nom }}</h2>
+                        <div class="cartes-doc-grid">
+                            {% for cours in groupe.cours_liste %}
+                                <article class="carte-doc">
+                                    <div class="carte-doc__header">
+                                        <h3 class="carte-doc__titre">{{ cours.titre }}</h3>
+                                        <div class="carte-doc__docs-principaux">
+                                            <a href="{{ cours.fichier_accompagnement.url }}" class="doc-icone" title="Document d'accompagnement">
+                                                <i class="ti ti-file"></i><span>Cours</span>
+                                            </a>
+                                            <a href="{{ cours.fichier_td.url }}" class="doc-icone" title="Feuille de TD">
+                                                <i class="ti ti-file"></i><span>TD</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    {% if cours.description %}
+                                        <p class="carte-doc__description">{{ cours.description|truncatewords:25|urlize }}</p>
+                                    {% endif %}
+
+                                    {% if cours.documents_lies %}
+                                        <div class="carte-doc__divider"></div>
+                                        <details class="carte-doc__lies">
+                                            <summary class="carte-doc__lies-label">
+                                                <span><i class="ti ti-link"></i> Documents liés</span>
+                                                <i class="ti ti-chevron-down carte-doc__lies-chevron"></i>
+                                            </summary>
+                                            <div class="carte-doc__lies-liste">
+                                                {% for doc in cours.documents_lies %}
+                                                    <a href="{{ doc.fichier_sujet.url }}" class="carte-doc__lie-item">
+                                                        <span class="carte-doc__lie-item-label">
+                                                            <i class="ti ti-file"></i>
+                                                            {{ doc.titre }}
+                                                        </span>
+                                                        <i class="ti ti-arrow-right"></i>
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </details>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% empty %}
+                    <p>Aucun cours archivé pour cette année.</p>
+                {% endfor %}
+
+            {% elif type_actif == 'tp' %}
+                <div class="cartes-doc-grid">
+                    {% for tp in tp_liste %}
+                        <article class="carte-doc">
+                            <div class="carte-doc__header">
+                                <h3 class="carte-doc__titre">{{ tp.titre }}</h3>
+                                <div class="carte-doc__docs-principaux">
+                                    <a href="{{ tp.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                                        <i class="ti ti-file"></i><span>Sujet</span>
+                                    </a>
+                                    {% if tp.fichier_corrige %}
+                                        <a href="{{ tp.fichier_corrige.url }}" class="doc-icone" title="Corrigé">
+                                            <i class="ti ti-file"></i><span>Corrigé</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if tp.description %}
+                                <p class="carte-doc__description">{{ tp.description|truncatewords:25|urlize }}</p>
+                            {% endif %}
+                            {% if tp.themes.all %}
+                                <div class="carte-doc__divider"></div>
+                                <p class="carte-doc__meta">{{ tp.themes.all|join:", " }}</p>
+                            {% endif %}
+                        </article>
+                    {% empty %}
+                        <p>Aucun TP archivé pour cette année.</p>
+                    {% endfor %}
+                </div>
+
+            {% elif type_actif == 'devoirs' %}
+                {% for groupe in devoirs_par_type %}
+                    <section class="theme-section">
+                        <h2 class="section-title">{{ groupe.type_label }}</h2>
+                        <div class="cartes-doc-grid">
+                            {% for devoir in groupe.devoirs %}
+                                <article class="carte-doc">
+                                    <div class="carte-doc__header">
+                                        <h3 class="carte-doc__titre">{{ devoir.titre }}</h3>
+                                        <div class="carte-doc__docs-principaux">
+                                            <a href="{{ devoir.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                                                <i class="ti ti-file"></i><span>Sujet</span>
+                                            </a>
+                                            {% if devoir.fichier_correction %}
+                                                <a href="{{ devoir.fichier_correction.url }}" class="doc-icone" title="Correction">
+                                                    <i class="ti ti-file"></i><span>Corrigé</span>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% if devoir.themes.all %}
+                                        <div class="carte-doc__divider"></div>
+                                        <p class="carte-doc__meta">{{ devoir.themes.all|join:", " }}</p>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% empty %}
+                    <p>Aucun devoir archivé pour cette année.</p>
+                {% endfor %}
+
+            {% elif type_actif == 'fiches' %}
+                <div class="cartes-doc-grid">
+                    {% for fiche in fiches %}
+                        <article class="carte-doc">
+                            <div class="carte-doc__header">
+                                <h3 class="carte-doc__titre">{{ fiche.titre }}</h3>
+                                <div class="carte-doc__docs-principaux">
+                                    {% for fichier in fiche.fichiers.all %}
+                                        <a href="{{ fichier.fichier.url }}" class="doc-icone" title="{{ fichier.legende|default:'Fichier' }}">
+                                            <i class="ti ti-file"></i><span>{{ fichier.legende|default:"Fichier"|truncatechars:8 }}</span>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if fiche.description %}
+                                <p class="carte-doc__description">{{ fiche.description|truncatewords:25|urlize }}</p>
+                            {% endif %}
+                        </article>
+                    {% empty %}
+                        <p>Aucune fiche outil archivée pour cette année.</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

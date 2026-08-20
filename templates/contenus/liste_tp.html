@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}TP{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">TP</h1>
+<p class="page-intro">Tous les travaux pratiques disponibles.</p>
+
+<div class="cartes-doc-grid">
+    {% for tp in tp_liste %}
+        <article class="carte-doc">
+            <div class="carte-doc__header">
+                <h3 class="carte-doc__titre">{{ tp.titre }}</h3>
+                <div class="carte-doc__docs-principaux">
+                    <a href="{{ tp.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                        <i class="ti ti-file"></i>
+                        <span>Sujet</span>
+                    </a>
+                    {% if tp.fichier_corrige %}
+                        <a href="{{ tp.fichier_corrige.url }}" class="doc-icone" title="Corrigé">
+                            <i class="ti ti-file"></i>
+                            <span>Corrigé</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if tp.description %}
+                <p class="carte-doc__description">{{ tp.description|truncatewords:25|urlize }}</p>
+            {% endif %}
+
+            {% if tp.themes.all %}
+                <div class="carte-doc__divider"></div>
+                <p class="carte-doc__meta">{{ tp.themes.all|join:", " }}</p>
+            {% endif %}
+        </article>
+    {% empty %}
+        <p>Aucun TP publié pour le moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

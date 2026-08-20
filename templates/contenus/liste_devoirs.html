@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Devoirs{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Devoirs</h1>
+<p class="page-intro">DM, DS et interrogations de cours.</p>
+
+<div class="filtres-groupe">
+    <span class="filtres-label">Thème</span>
+    <div class="chips">
+        <a href="?{% if type_actif %}type={{ type_actif }}{% endif %}"
+           class="chip{% if not theme_actif %} chip--active{% endif %}">Tous</a>
+        {% for theme in themes %}
+            <a href="?theme={{ theme.slug }}{% if type_actif %}&type={{ type_actif }}{% endif %}"
+               class="chip{% if theme_actif == theme %} chip--active{% endif %}">{{ theme.nom }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="filtres-groupe">
+    <span class="filtres-label">Type</span>
+    <div class="chips">
+        <a href="?{% if theme_actif %}theme={{ theme_actif.slug }}{% endif %}"
+           class="chip{% if not type_actif %} chip--active{% endif %}">Tous</a>
+        {% for type_value, type_label in types_devoir %}
+            <a href="?type={{ type_value }}{% if theme_actif %}&theme={{ theme_actif.slug }}{% endif %}"
+               class="chip{% if type_actif == type_value %} chip--active{% endif %}">{{ type_label }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+{% for groupe in devoirs_par_type %}
+    <section class="theme-section">
+        <h2 class="section-title">{{ groupe.type_label }}</h2>
+        <div class="cartes-doc-grid">
+            {% for devoir in groupe.devoirs %}
+                <article class="carte-doc">
+                    <div class="carte-doc__header">
+                        <h3 class="carte-doc__titre">{{ devoir.titre }}</h3>
+                        <div class="carte-doc__docs-principaux">
+                            <a href="{{ devoir.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                                <i class="ti ti-file"></i>
+                                <span>Sujet</span>
+                            </a>
+                            {% if devoir.fichier_correction %}
+                                <a href="{{ devoir.fichier_correction.url }}" class="doc-icone" title="Correction">
+                                    <i class="ti ti-file"></i>
+                                    <span>Corrigé</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if devoir.themes.all %}
+                        <div class="carte-doc__divider"></div>
+                        <p class="carte-doc__meta">{{ devoir.themes.all|join:", " }}</p>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% empty %}
+    <p>Aucun devoir publié pour le moment.</p>
+{% endfor %}
+
+{% endblock %}
