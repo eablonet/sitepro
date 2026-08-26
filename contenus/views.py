@@ -1,6 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire
 
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.conf import settings
+from .forms import ContactForm
+
 from itertools import chain
 
 
@@ -217,3 +223,45 @@ def accueil(request):
     return render(request, 'contenus/accueil.html', {
         'derniers_contenus': derniers_contenus,
     })
+    
+def mentions_legales(request):
+    return render(request, 'contenus/mentions_legales.html')
+
+
+def confidentialite(request):
+    return render(request, 'contenus/confidentialite.html')
+
+
+
+# =====
+# Formulaire de contact
+# ====
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            nom = form.cleaned_data['nom']
+            email = form.cleaned_data['email']
+            sujet = form.cleaned_data['sujet']
+            message = form.cleaned_data['message']
+
+            corps = (
+                f"Message envoyé depuis le formulaire de contact du site.\n\n"
+                f"Nom : {nom}\n"
+                f"Adresse : {email}\n\n"
+                f"{message}"
+            )
+
+            send_mail(
+                subject=f"[Site TSI1] {sujet}",
+                message=corps,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.CONTACT_EMAIL],
+            )
+
+            messages.success(request, "Votre message a bien été envoyé. Merci !")
+            return redirect('contenus:contact')
+    else:
+        form = ContactForm()
+
+    return render(request, 'contenus/contact.html', {'form': form})

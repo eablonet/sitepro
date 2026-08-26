@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Page introuvable{% endblock %}
+
+{% block content %}
+
+<div class="page-erreur">
+    <p class="page-erreur__code">404</p>
+    <h1 class="page-title">Page introuvable</h1>
+    <p class="page-intro">
+        La page que vous cherchez n'existe pas ou a été déplacée.
+        Elle a peut-être été archivée avec une année scolaire précédente.
+    </p>
+    <div class="page-erreur__liens">
+        <a href="{% url 'contenus:accueil' %}" class="chip chip--active">Retour à l'accueil</a>
+        <a href="{% url 'contenus:archives' %}" class="chip">Consulter les archives</a>
+    </div>
+</div>
+
+{% endblock %}

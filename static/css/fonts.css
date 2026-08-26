@@ -1,0 +1,39 @@
+/* ============================================================
+   FONTS — polices auto-hébergées (RGPD : aucune requête
+   vers un serveur tiers, l'IP du visiteur n'est pas transmise).
+   Chargé avant tokens.css qui référence ces familles.
+   ============================================================ */
+
+/* --- DM Sans (titres) --- */
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/dm-sans-v17-latin_latin-ext-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/dm-sans-v17-latin_latin-ext-500.woff2') format('woff2');
+}
+
+/* --- Inter (corps, UI) --- */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/inter-v20-latin_latin-ext-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/inter-v20-latin_latin-ext-500.woff2') format('woff2');
+}

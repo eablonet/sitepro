@@ -12,3 +12,27 @@
     font: var(--text-meta);
     color: var(--text-muted);
 }
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.site-footer__liens {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.site-footer__liens a {
+  font: var(--text-meta);
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.site-footer__liens a:hover {
+  color: var(--accent);
+}

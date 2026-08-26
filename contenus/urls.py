@@ -11,4 +11,7 @@ urlpatterns = [
     path('fiches-outils/', views.liste_fiches_outils, name='liste_fiches_outils'),
     path('archives/', views.archives, name='archives'),
     path('archives/<str:annee_nom>/', views.archives, name='archives'),
+    path('mentions-legales/', views.mentions_legales, name='mentions_legales'),
+    path('confidentialite/', views.confidentialite, name='confidentialite'),
+    path('contact/', views.contact, name='contact'),
 ]

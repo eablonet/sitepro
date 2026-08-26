@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+
+<div class="page-texte">
+    <h1 class="page-title">Contact</h1>
+    <p class="page-intro">
+        Une question sur un document, une erreur repérée, une remarque ?
+        Utilisez ce formulaire, je vous répondrai dès que possible.
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alerte alerte--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="formulaire" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="champ{% if field.name == 'site_web' %} champ--piege{% endif %}">
+                <label for="{{ field.id_for_label }}" class="champ__label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="champ__erreur">{{ field.errors|first }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="bouton">Envoyer</button>
+    </form>
+
+    <p class="formulaire__note">
+        Les informations saisies servent uniquement à traiter votre demande.
+        Voir la <a href="{% url 'contenus:confidentialite' %}">politique de confidentialité</a>.
+    </p>
+</div>
+
+{% endblock %}

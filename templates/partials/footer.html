@@ -1,7 +1,12 @@
 {% load static %}
 
 <footer class="site-footer">
-    <div class="container">
-        <p class="site-footer__text">Site pédagogique — {% now "Y" %}</p>
+    <div class="container site-footer__inner">
+        <nav class="site-footer__liens">
+            <a href="{% url 'contenus:mentions_legales' %}">Mentions légales</a>
+            <a href="{% url 'contenus:confidentialite' %}">Confidentialité</a>
+            <a href="{% url 'contenus:contact' %}">Contact</a>
+        </nav>
+        <p class="site-footer__text">Contenus sous licence CC BY-NC-SA — {% now "Y" %}</p>
     </div>
 </footer>

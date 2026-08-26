@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -128,11 +128,24 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
 MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    "default": {
+        "BACKEND": config(
+            'MAILER_BACKEND',
+            default='django.core.mail.backends.console.EmailBackend'
+        ),
+        "OPTIONS": {
+            "host": config('SMTP_HOST', default=''),
+            "port": config('SMTP_PORT', default=587, cast=int),
+            "use_tls": True,
+            "username": config('SMTP_USER', default=''),
+            "password": config('SMTP_PASSWORD', default=''),
+            "timeout": 10,
+        } if config('MAILER_BACKEND', default='') else {},
     },
 }
 
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+CONTACT_EMAIL = config('CONTACT_EMAIL')
 
 # Media
 MEDIA_URL = 'media/'

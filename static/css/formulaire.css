@@ -1,0 +1,97 @@
+/* ============================================================
+   FORMULAIRE — champs, boutons et messages d'alerte
+   ============================================================ */
+
+.formulaire {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.champ {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* Champ piège anti-spam : masqué pour les humains, présent dans le HTML */
+.champ--piege {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.champ__label {
+    font: var(--text-ui);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.champ input,
+.champ textarea {
+    font: var(--text-body);
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-sm);
+    width: 100%;
+}
+
+.champ input:focus,
+.champ textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.champ input::placeholder,
+.champ textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.champ__erreur {
+    font: var(--text-meta);
+    color: var(--danger);
+}
+
+.bouton {
+    font: var(--text-ui);
+    font-weight: 500;
+    color: #FFFFFF;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    padding: 10px var(--space-lg);
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.bouton:hover {
+    background: var(--accent-hover);
+}
+
+.alerte {
+    font: var(--text-ui);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-md);
+}
+
+.alerte--success {
+    background: var(--accent-subtle);
+    color: var(--accent);
+}
+
+.alerte--error {
+    background: #FDEDEC;
+    color: var(--danger);
+}
+
+.formulaire__note {
+    font: var(--text-meta);
+    color: var(--text-muted);
+}

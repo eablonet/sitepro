@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Mentions légales{% endblock %}
+
+{% block content %}
+
+<div class="page-texte">
+    <h1 class="page-title">Mentions légales</h1>
+
+    <h2 class="section-title">Éditeur du site</h2>
+    <p>
+        Ce site est édité à titre personnel et non professionnel par
+        <strong>Emeryk Ablonet</strong>, professeur en classe préparatoire TSI1
+        au Lycée Saint Cricq, Pau.
+    </p>
+    <p>
+        Contact : via le <a href="{% url 'contenus:contact' %}">formulaire de contact</a>.
+    </p>
+    <p>
+        Directeur de la publication : Emeryk Ablonet.
+    </p>
+
+    <h2 class="section-title">Hébergement</h2>
+    <p>
+        Ce site est hébergé par <strong>OVH SAS</strong><br>
+        2 rue Kellermann — 59100 Roubaix — France<br>
+        <a href="https://www.ovhcloud.com" rel="noopener">www.ovhcloud.com</a>
+    </p>
+
+    <h2 class="section-title">Nature du site</h2>
+    <p>
+        Ce site est une initiative personnelle, sans but commercial. Il ne comporte
+        ni publicité, ni lien d'affiliation, ni activité de vente. Il a pour unique
+        objet la mise à disposition de supports pédagogiques auprès des étudiants
+        de la classe concernée.
+    </p>
+    <p>
+        Ce site n'est pas un site officiel du Lycée Saint Cricq et n'engage pas
+        l'établissement. Le site de l'établissement est consultable à l'adresse
+        <a href="https://www.lycee-saint-cricq.org/" rel="noopener">https://www.lycee-saint-cricq.org/</a>, et celui de la
+        classe préparatoire à l'adresse
+        <a href="http://www.prepatsipau.fr/" rel="noopener">http://www.prepatsipau.fr/</a>.
+    </p>
+
+    <h2 class="section-title">Propriété intellectuelle</h2>
+    <p>
+        Sauf mention contraire portée sur un document, l'ensemble des supports
+        pédagogiques mis à disposition sur ce site (cours, travaux dirigés,
+        travaux pratiques, devoirs, fiches outils) sont l'œuvre de Emeryk Ablonet
+        et sont diffusés sous licence
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr" rel="noopener">
+        Creative Commons BY-NC-SA 4.0</a>.
+    </p>
+    <p>
+        Cette licence autorise leur reproduction, leur diffusion et leur adaptation,
+        sous réserve d'en citer l'auteur, de ne pas en faire un usage commercial,
+        et de diffuser toute adaptation sous la même licence.
+    </p>
+    <p>
+        Le code source de ce site est distribué sous licence
+        <a href="https://www.gnu.org/licenses/gpl-3.0.html" rel="noopener">GNU GPL v3</a>.
+    </p>
+
+    <h2 class="section-title">Données personnelles</h2>
+    <p>
+        Les modalités de traitement des données personnelles sont détaillées dans la
+        <a href="{% url 'contenus:confidentialite' %}">politique de confidentialité</a>.
+    </p>
+</div>
+
+{% endblock %}

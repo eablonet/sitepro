@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Politique de confidentialité{% endblock %}
+
+{% block content %}
+
+<div class="page-texte">
+    <h1 class="page-title">Politique de confidentialité</h1>
+
+    <p>
+        Cette page décrit les données personnelles traitées par ce site et les droits
+        dont vous disposez à leur égard, conformément au Règlement général sur la
+        protection des données (RGPD).
+    </p>
+
+    <h2 class="section-title">Responsable du traitement</h2>
+    <p>
+        Emeryk Ablonet, éditeur du site (voir les
+        <a href="{% url 'contenus:mentions_legales' %}">mentions légales</a>).
+    </p>
+
+    <h2 class="section-title">Consultation du site</h2>
+    <p>
+        La consultation des pages et le téléchargement des documents ne nécessitent
+        aucune inscription ni création de compte. Aucune donnée n'est collectée à
+        des fins de profilage, de publicité ou de mesure d'audience.
+    </p>
+    <p>
+        Comme tout serveur web, l'hébergeur enregistre automatiquement des journaux
+        de connexion contenant notamment l'adresse IP du visiteur, la date et l'heure
+        de la requête, et la page consultée. Ces journaux relèvent de la responsabilité
+        de l'hébergeur (OVH), sont conservés pour des raisons de sécurité et de bon
+        fonctionnement technique, et ne font l'objet d'aucune exploitation par
+        l'éditeur du site.
+    </p>
+
+    <h2 class="section-title">Formulaire de contact</h2>
+    <p>
+        Le formulaire de contact collecte les informations que vous y saisissez
+        volontairement : votre nom, votre adresse électronique et le contenu de
+        votre message.
+    </p>
+    <p>
+        <strong>Finalité :</strong> permettre à l'éditeur de répondre à votre demande.<br>
+        <strong>Base légale :</strong> votre consentement, matérialisé par l'envoi
+        volontaire du formulaire.<br>
+        <strong>Destinataire :</strong> l'éditeur du site uniquement. Ces données ne
+        sont ni transmises, ni vendues, ni cédées à un tiers.<br>
+        <strong>Durée de conservation :</strong> les messages sont conservés le temps
+        nécessaire au traitement de la demande et à un éventuel échange de suivi,
+        puis supprimés.
+    </p>
+
+    <h2 class="section-title">Cookies</h2>
+    <p>
+        Ce site ne dépose aucun cookie de mesure d'audience, de publicité ou de
+        réseau social. Seul un cookie technique strictement nécessaire au
+        fonctionnement du site peut être déposé lors de l'utilisation du formulaire
+        de contact (protection contre les envois frauduleux) ou lors de la connexion
+        à l'espace d'administration réservé à l'éditeur.
+    </p>
+    <p>
+        Ces cookies étant strictement nécessaires au fonctionnement du service, ils
+        ne requièrent pas de consentement préalable.
+    </p>
+
+    <h2 class="section-title">Vos droits</h2>
+    <p>
+        Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation
+        et d'opposition concernant les données vous concernant. Pour exercer ces droits,
+        vous pouvez utiliser le
+        <a href="{% url 'contenus:contact' %}">formulaire de contact</a>.
+    </p>
+    <p>
+        Vous disposez également du droit d'introduire une réclamation auprès de la
+        Commission nationale de l'informatique et des libertés (CNIL),
+        <a href="https://www.cnil.fr" rel="noopener">www.cnil.fr</a>.
+    </p>
+
+    <h2 class="section-title">Modification</h2>
+    <p>
+        Cette politique pourra être mise à jour, notamment en cas d'ajout de nouvelles
+        fonctionnalités au site. Dernière mise à jour : 26 août 2026.
+    </p>
+</div>
+
+{% endblock %}
