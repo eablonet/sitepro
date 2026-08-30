@@ -1,13 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire
 
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.conf import settings
 from .forms import ContactForm
 
 from itertools import chain
+
+# traçage des erreurs
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Vue pour les TP
@@ -252,12 +256,18 @@ def contact(request):
                 f"{message}"
             )
 
-            send_mail(
-                subject=f"[Site TSI1] {sujet}",
-                message=corps,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.CONTACT_EMAIL],
-            )
+            try:
+                EmailMessage(
+                    subject=f"[Site TSI1] {sujet}",
+                    body=corps,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[settings.CONTACT_EMAIL],
+                    reply_to=[email],
+                ).send()
+                messages.success(request, "Votre message a bien été envoyé. Merci !")
+            except Exception:
+                logger.exception("Échec d'envoi du formulaire de contact")
+                messages.error(request, "L'envoi a échoué, veuillez réessayer plus tard.")
 
             messages.success(request, "Votre message a bien été envoyé. Merci !")
             return redirect('contenus:contact')
@@ -265,3 +275,10 @@ def contact(request):
         form = ContactForm()
 
     return render(request, 'contenus/contact.html', {'form': form})
+
+
+
+
+
+
+
