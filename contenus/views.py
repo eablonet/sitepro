@@ -269,7 +269,6 @@ def contact(request):
                 logger.exception("Échec d'envoi du formulaire de contact")
                 messages.error(request, "L'envoi a échoué, veuillez réessayer plus tard.")
 
-            messages.success(request, "Votre message a bien été envoyé. Merci !")
             return redirect('contenus:contact')
     else:
         form = ContactForm()
