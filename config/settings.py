@@ -147,12 +147,13 @@ MAILERS = {
         ),
         "OPTIONS": {
             "host": config('SMTP_HOST', default=''),
-            "port": config('SMTP_PORT', default=587, cast=int),
-            "use_tls": True,
+            "port": config('SMTP_PORT', default=465, cast=int),
+            "use_ssl": config('SMTP_SSL', default=True, cast=bool), # pas avec un STARTTLS, mais avec un SMTPS (465)
+            "use_tls": config('SMTP_TLS', default=False, cast=bool), # pas avec un SMTPS, mais avec un STARTTLS (587)
             "username": config('SMTP_USER', default=''),
             "password": config('SMTP_PASSWORD', default=''),
             "timeout": 10,
-        } if config('MAILER_BACKEND', default='') else {},
+        },
     },
 }
 
