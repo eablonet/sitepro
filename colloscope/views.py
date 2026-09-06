@@ -101,12 +101,11 @@ def colloscope(request):
     if semaine_active:
         passages = passages.filter(semaine=semaine_active)
 
-    # --- Groupe ---
-    groupe_actif = None
-    if request.GET.get('groupe'):
-        groupe_actif = groupes.filter(nom=request.GET['groupe']).first()
-        if groupe_actif:
-            passages = passages.filter(groupe=groupe_actif)
+    # --- Groupes (sélection multiple) ---
+    noms_groupes = [n for n in request.GET.getlist('groupe') if n]
+    groupes_actifs = list(groupes.filter(nom__in=noms_groupes))
+    if groupes_actifs:
+        passages = passages.filter(groupe__in=groupes_actifs)
 
     # --- Élève (niveau prof uniquement) ---
     eleve_actif = None
@@ -157,7 +156,8 @@ def colloscope(request):
         'matieres': matieres,
         'eleves': Eleve.objects.all() if niveau == 'prof' else None,
         'semaine_active': semaine_active,
-        'groupe_actif': groupe_actif,
+        'groupes_actifs': groupes_actifs,
+        'noms_groupes_actifs': [g.nom for g in groupes_actifs],
         'eleve_actif': eleve_actif,
         'colleur_actif': colleur_actif,
         'matiere_active': matiere_active,

@@ -53,11 +53,15 @@
         </div>
 
         <div class="champ">
-            <label for="f-groupe" class="champ__label">Groupe</label>
-            <select name="groupe" id="f-groupe">
-                <option value="">Tous</option>
+            <label for="f-groupe" class="champ__label">
+                Groupes
+                <span class="champ__aide">plusieurs choix possibles</span>
+            </label>
+            <select name="groupe" id="f-groupe" multiple size="5">
                 {% for groupe in groupes %}
-                    <option value="{{ groupe.nom }}" {% if groupe_actif == groupe %}selected{% endif %}>{{ groupe.nom }}</option>
+                    <option value="{{ groupe.nom }}" {% if groupe.nom in noms_groupes_actifs %}selected{% endif %}>
+                        {{ groupe.nom }}{% if groupe.effectif %} ({{ groupe.effectif }}){% endif %}
+                    </option>
                 {% endfor %}
             </select>
         </div>

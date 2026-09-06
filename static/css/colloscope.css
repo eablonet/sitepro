@@ -133,6 +133,22 @@
     gap: 6px;
 }
 
+.champ__aide {
+    display: block;
+    font: var(--text-meta);
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.colloscope-filtres select[multiple] {
+    padding: var(--space-xs);
+}
+
+.colloscope-filtres select[multiple] option {
+    padding: 2px var(--space-xs);
+    border-radius: 4px;
+}
+
 /* ------------------------------------------------------------
    IMPRESSION — feuille de colle compacte.
    Paysage + trois colonnes : une vingtaine de semaines tiennent
