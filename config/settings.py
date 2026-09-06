@@ -94,12 +94,6 @@ DATABASES = {
         'NAME': config('DB_PATH', default=BASE_DIR / 'db.sqlite3'),
     }
 }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -207,5 +201,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': config('CACHE_DIR', default=BASE_DIR / 'cache'),
+        'OPTIONS': {'MAX_ENTRIES': 1000},
     }
 }
