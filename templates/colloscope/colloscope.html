@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_js %}
+    <script src="{% static 'js/colloscope.js' %}" defer></script>
+{% endblock %}
+
+{% block title %}Colloscope{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/colloscope.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="colloscope-entete">
+    <div>
+        <h1 class="page-title">Colloscope</h1>
+        <p class="page-intro">
+            {% if libelle_annee %}Année {{ libelle_annee }}{% endif %}
+            {% if niveau == 'prof' %}<span class="badge">Accès enseignant</span>{% endif %}
+        </p>
+    </div>
+    <div class="colloscope-actions">
+        {% if niveau == 'prof' %}
+            <button type="button" class="bouton bouton--discret" id="bouton-imprimer">
+                <i class="ti ti-printer"></i>
+                Imprimer
+            </button>
+        {% endif %}
+        <form method="post" action="{% url 'colloscope:deconnexion' %}">
+            {% csrf_token %}
+            <button type="submit" class="bouton bouton--discret">Quitter</button>
+        </form>
+    </div>
+</div>
+
+{% if not libelle_annee %}
+    <p>Aucun colloscope publié actuellement.</p>
+{% else %}
+
+    <form method="get" class="colloscope-filtres">
+        <div class="champ">
+            <label for="f-semaine" class="champ__label">Semaine</label>
+            <select name="semaine" id="f-semaine">
+                <option value="toutes" {% if not semaine_active %}selected{% endif %}>Toutes</option>
+                {% for semaine in semaines %}
+                    <option value="{{ semaine.numero }}" {% if semaine_active == semaine %}selected{% endif %}>
+                        S{{ semaine.numero }} — {{ semaine.date_debut|date:"d/m" }}{% if semaine.est_en_cours %} (en cours){% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="champ">
+            <label for="f-groupe" class="champ__label">Groupe</label>
+            <select name="groupe" id="f-groupe">
+                <option value="">Tous</option>
+                {% for groupe in groupes %}
+                    <option value="{{ groupe.nom }}" {% if groupe_actif == groupe %}selected{% endif %}>{{ groupe.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {% if niveau == 'prof' %}
+            <div class="champ">
+                <label for="f-eleve" class="champ__label">Élève</label>
+                <select name="eleve" id="f-eleve">
+                    <option value="">Tous</option>
+                    {% for eleve in eleves %}
+                        <option value="{{ eleve.pk }}" {% if eleve_actif == eleve %}selected{% endif %}>{{ eleve }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+
+        <div class="champ">
+            <label for="f-matiere" class="champ__label">Matière</label>
+            <select name="matiere" id="f-matiere">
+                <option value="">Toutes</option>
+                {% for matiere in matieres %}
+                    <option value="{{ matiere }}" {% if matiere_active == matiere %}selected{% endif %}>{{ matiere }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="champ">
+            <label for="f-colleur" class="champ__label">Colleur</label>
+            <select name="colleur" id="f-colleur">
+                <option value="">Tous</option>
+                {% for colleur in colleurs %}
+                    <option value="{{ colleur.pk }}" {% if colleur_actif == colleur %}selected{% endif %}>{{ colleur.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="colloscope-filtres__actions">
+            <button type="submit" class="bouton">Filtrer</button>
+            <a href="{% url 'colloscope:colloscope' %}" class="colloscope-reset">Réinitialiser</a>
+        </div>
+    </form>
+
+    <div class="colloscope-planning">
+        {% for bloc in planning %}
+            <section class="theme-section">
+                <h2 class="section-title{% if bloc.semaine.est_en_cours %} semaine--en-cours{% endif %}">
+                    S{{ bloc.semaine.numero }}
+                    <span class="colloscope-date">semaine du {{ bloc.semaine.date_debut|date:"l j F" }}</span>
+                    {% if bloc.semaine.est_en_cours %}<span class="badge">Cette semaine</span>{% endif %}
+                </h2>
+
+                {% for jour in bloc.jours %}
+                    <h3 class="colloscope-jour">{{ jour.libelle }}</h3>
+                    <div class="colloscope-liste">
+                        {% for passage in jour.passages %}
+                            <div class="colloscope-ligne">
+                                <span class="colloscope-horaire">{{ passage.creneau.horaire }}</span>
+                                <span class="colloscope-colleur">
+                                    {{ passage.creneau.colleur.nom }}
+                                    <span class="colloscope-matiere">{{ passage.creneau.colleur.matiere }}</span>
+                                </span>
+                                <span class="colloscope-groupe">
+                                    {{ passage.groupe.nom }}
+                                    {% if passage.membres %}
+                                        <span class="colloscope-membres">{{ passage.membres|join:", " }}</span>
+                                    {% endif %}
+                                </span>
+                                <span class="colloscope-salle">{{ passage.creneau.salle|default:"—" }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </section>
+        {% empty %}
+            <p>Aucune colle ne correspond à ces critères.</p>
+        {% endfor %}
+    </div>
+
+{% endif %}
+
+{% endblock %}

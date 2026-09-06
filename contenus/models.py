@@ -80,46 +80,62 @@ class Theme(models.Model):
 ## Gestion des cours
 class Cours(models.Model):
     titre = models.CharField(max_length=200)
-    slug = models.SlugField(
-        max_length=200, unique=True, blank=True,
-        help_text="Si vide sera complété automatiquement. Ex 'E1_24-25' pour le E1 de l'année 2024-2025"
-        )
-    description = models.TextField(
-        blank=True,
-        help_text='Peut contenir des url en txt simple, pas de format enrichi pour le moment'
-    )
-    fichier_accompagnement = models.FileField(upload_to='cours/fichier_accompagnement/')
-    fichier_td = models.FileField(upload_to='cours/td/')
-    
+    slug = models.SlugField(max_length=210, unique=True, blank=True)
+    description = models.TextField(blank=True)
+
+    fichier_cours_prof = models.FileField(
+        "Fiche de cours — version complète",
+        upload_to='cours/fiches/', blank=True, null=True)
+    fichier_cours_eleve = models.FileField(
+        "Fiche de cours — version élève",
+        upload_to='cours/fiches/', blank=True, null=True)
+    fichier_td_prof = models.FileField(
+        "Fiche de TD — version complète",
+        upload_to='cours/td/', blank=True, null=True)
+    fichier_td_eleve = models.FileField(
+        "Fiche de TD — version élève",
+        upload_to='cours/td/', blank=True, null=True)
+    fichier_manip = models.FileField(
+        "Manipulation de cours",
+        upload_to='cours/manips/', blank=True, null=True)
+
     theme = models.ForeignKey(Theme, on_delete=models.PROTECT, related_name='cours')
     annee_scolaire = models.ForeignKey(
-        AnneeScolaire,
-        on_delete=models.PROTECT,
-        related_name='cours',
-        default=annee_scolaire_courante
-    )
-    
-    tp_lies = models.ManyToManyField(
-        'TP',
-        related_name='cours_lies',
-        blank=True
-    )
-    devoirs_lies = models.ManyToManyField(
-        'Devoir',
-        related_name='cours_lies',
-        blank=True
-    )
-    
-    date_publication = models.DateTimeField(auto_now=True)
+        AnneeScolaire, on_delete=models.PROTECT,
+        related_name='cours', default=annee_scolaire_courante)
+    tp_lies = models.ManyToManyField('TP', related_name='cours_lies', blank=True)
+    devoirs_lies = models.ManyToManyField('Devoir', related_name='cours_lies', blank=True)
+
+    date_publication = models.DateTimeField(auto_now_add=True)
     publie = models.BooleanField(default=True)
-    
+
+    # (nom du champ, libellé court affiché sur la vignette)
+    FICHIERS = [
+        ('fichier_cours_prof', "Cours prof"),
+        ('fichier_cours_eleve', "Cours élève"),
+        ('fichier_td_prof', "TD prof"),
+        ('fichier_td_eleve', "TD élève"),
+        ('fichier_manip', "Manip"),
+    ]
+
+    @property
+    def fichiers_disponibles(self):
+        """Liste des fichiers réellement renseignés, dans l'ordre de FICHIERS."""
+        resultat = []
+        for nom_champ, libelle in self.FICHIERS:
+            fichier = getattr(self, nom_champ)
+            if fichier:
+                resultat.append({'fichier': fichier, 'libelle': libelle})
+        return resultat
+
     class Meta:
         ordering = ['-date_publication']
+        verbose_name = "Cours"
         verbose_name_plural = "Cours"
-        
+
     def __str__(self):
         return self.titre
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slug_avec_annee(self.titre, self.annee_scolaire)
@@ -276,3 +292,30 @@ class FichierOutil(models.Model):
 
     def __str__(self):
         return self.legende or self.fichier.name
+    
+class ProgrammeColle(models.Model):
+    semaine = models.PositiveIntegerField(
+        help_text="Numéro de la semaine (1, 2, 3…)"
+    )
+    titre = models.CharField(
+        max_length=200,
+        help_text="Ex : 'Semaine 12 — Électrocinétique et mécanique'"
+    )
+    fichier = models.FileField(upload_to='colles/programmes/')
+
+    annee_scolaire = models.ForeignKey(
+        AnneeScolaire,
+        on_delete=models.PROTECT,
+        related_name='programmes_colles',
+        default=annee_scolaire_courante
+    )
+    date_publication = models.DateTimeField(auto_now_add=True)
+    publie = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-semaine']
+        verbose_name = "Programme de colle"
+        verbose_name_plural = "Programmes de colles"
+
+    def __str__(self):
+        return f"S{self.semaine} — {self.titre}"

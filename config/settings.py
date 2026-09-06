@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contenus',
+    'colloscope',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': config('DB_PATH', default=BASE_DIR / 'db.sqlite3'),
+    }
+}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -147,7 +154,7 @@ MAILERS = {
         ),
         "OPTIONS": {
             "host": config('SMTP_HOST', default=''),
-            "port": config('SMTP_PORT', default=465, cast=int),
+            "port": config('SMTP_PORT', default=0),
             "use_ssl": config('SMTP_SSL', default=True, cast=bool), # pas avec un STARTTLS, mais avec un SMTPS (465)
             "use_tls": config('SMTP_TLS', default=False, cast=bool), # pas avec un SMTPS, mais avec un STARTTLS (587)
             "username": config('SMTP_USER', default=''),
@@ -190,4 +197,15 @@ LOGGING = {
             'propagate': False,
         },
     },
+}
+
+COLLOSCOPE_MDP_ELEVE = config('COLLOSCOPE_MDP_ELEVE', default='')
+COLLOSCOPE_MDP_PROF = config('COLLOSCOPE_MDP_PROF', default='')
+SESSION_SAVE_EVERY_REQUEST = True # sessions glissantes
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': config('CACHE_DIR', default=BASE_DIR / 'cache'),
+    }
 }

@@ -142,3 +142,10 @@
     align-items: center;
     gap: 6px;
 }
+
+.carte-doc__fichiers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+}

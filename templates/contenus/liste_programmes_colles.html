@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Programmes de colles{% endblock %}
+{% block description %}Programmes de colles hebdomadaires pour la classe de TSI1.{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Programmes de colles</h1>
+<p class="page-intro">Le programme est mis à jour chaque semaine.</p>
+
+<div class="carte-doc__lies-liste">
+    {% for prog in programmes %}
+        <a href="{{ prog.fichier.url }}" class="carte-doc__lie-item">
+            <span class="carte-doc__lie-item-label">
+                <i class="ti ti-file"></i>
+                {{ prog }}
+            </span>
+            <i class="ti ti-download"></i>
+        </a>
+    {% empty %}
+        <p>Aucun programme publié pour le moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

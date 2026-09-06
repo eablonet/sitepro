@@ -37,6 +37,24 @@
         </div>
       </div>
       <a href="{% url 'contenus:liste_fiches_outils' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_fiches_outils' %} site-nav__link--active{% endif %}">Fiches outils</a>
+      
+      <div class="nav-item nav-item--dropdown">
+          <a href="{% url 'contenus:liste_programmes_colles' %}"
+            class="site-nav__link site-nav__link--trigger{% if 'colles' in request.path %} site-nav__link--active{% endif %}">
+              Colles
+              <i class="ti ti-chevron-down"></i>
+          </a>
+          <div class="dropdown-panel">
+              <a href="{% url 'contenus:liste_programmes_colles' %}" class="dropdown-panel__item">
+                  <i class="ti ti-file"></i>
+                  Programmes
+              </a>
+              <a href="{% url 'colloscope:colloscope' %}" class="dropdown-panel__item">
+                <i class="ti ti-lock"></i>
+                Colloscope
+              </a>
+          </div>
+      </div>
 
       <span class="site-nav__divider"></span>
 
@@ -76,7 +94,19 @@
             {% endfor %}
         </div>
     </div>
+    
     <a href="{% url 'contenus:liste_fiches_outils' %}" class="mobile-nav__link">Fiches outils <i class="ti ti-chevron-right"></i></a>
+
+    <div class="mobile-nav__accordion">
+        <button type="button" class="mobile-nav__accordion-trigger" aria-expanded="false" aria-controls="mobile-colles-panel">
+            Colles
+            <i class="ti ti-chevron-down"></i>
+        </button>
+        <div class="mobile-nav__accordion-panel" id="mobile-colles-panel" hidden>
+            <a href="{% url 'contenus:liste_programmes_colles' %}" class="mobile-nav__sublink">Programmes</a>
+            <a href="{% url 'colloscope:colloscope' %}" class="mobile-nav__sublink">Colloscope</a>
+        </div>
+    </div>
 
     <div class="mobile-nav__divider"></div>
 

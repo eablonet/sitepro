@@ -213,3 +213,19 @@
         display: none !important;
     }
 }
+
+.dropdown-panel__item--disabled {
+    color: var(--text-muted);
+    cursor: default;
+    opacity: 0.6;
+}
+
+.dropdown-panel__item--disabled:hover {
+    background: none;
+    color: var(--text-muted);
+}
+
+.mobile-nav__sublink--disabled {
+    color: var(--text-muted);
+    opacity: 0.6;
+}

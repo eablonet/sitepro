@@ -95,3 +95,31 @@
     font: var(--text-meta);
     color: var(--text-muted);
 }
+
+.champ-mdp {
+    position: relative;
+}
+
+.champ-mdp input {
+    /* Réserve la place du bouton pour que le texte ne passe pas dessous. */
+    padding-right: 44px;
+}
+
+.champ-mdp__bascule {
+    position: absolute;
+    top: 50%;
+    right: var(--space-sm);
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+
+.champ-mdp__bascule:hover {
+    color: var(--accent);
+}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire
+from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire, ProgrammeColle
 
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -277,7 +277,14 @@ def contact(request):
 
 
 
-
+def liste_programmes_colles(request):
+    programmes = ProgrammeColle.objects.filter(
+        publie=True,
+        annee_scolaire__est_courante=True
+    )
+    return render(request, 'contenus/liste_programmes_colles.html', {
+        'programmes': programmes,
+    })
 
 
 

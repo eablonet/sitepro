@@ -24,12 +24,19 @@
                 <h3 class="carte-doc__titre">{{ item.titre }}</h3>
                 <div class="carte-doc__docs-principaux">
                     {% if item.type_contenu == 'cours' %}
-                        <a href="{{ item.fichier_accompagnement.url }}" class="doc-icone" title="Document d'accompagnement">
-                            <i class="ti ti-file"></i><span>Résumé</span>
-                        </a>
-                        <a href="{{ item.fichier_td.url }}" class="doc-icone" title="Feuille de TD">
-                            <i class="ti ti-file"></i><span>TD</span>
-                        </a>
+                        {% if item.fichiers_disponibles %}
+                            <div class="carte-doc__lies-liste">
+                                {% for doc in item.fichiers_disponibles %}
+                                    <a href="{{ doc.fichier.url }}" class="carte-doc__lie-item">
+                                        <span class="carte-doc__lie-item-label">
+                                            <i class="ti ti-file"></i>
+                                            {{ doc.libelle }}
+                                        </span>
+                                        <i class="ti ti-download"></i>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     {% elif item.type_contenu == 'tp' %}
                         <a href="{{ item.fichier_sujet.url }}" class="doc-icone" title="Sujet">
                             <i class="ti ti-file"></i><span>Sujet</span>

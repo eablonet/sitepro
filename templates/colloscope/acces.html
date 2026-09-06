@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Colloscope — accès{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/colloscope.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-texte">
+    <h1 class="page-title">Colloscope</h1>
+    <p class="page-intro">
+        Cette page est réservée aux étudiants de la classe et aux enseignants.
+        Le mot de passe vous a été communiqué en cours.
+    </p>
+
+    {% if bloque %}
+        <div class="alerte alerte--error">
+            Trop de tentatives infructueuses depuis cette connexion.
+            Réessayez dans une trentaine de minutes.
+        </div>
+    {% else %}
+        {% if avertir %}
+            <div class="alerte alerte--error">
+                Attention : plus que {{ restants }} tentative{{ restants|pluralize }}
+                avant blocage temporaire.
+            </div>
+        {% endif %}
+
+        <form method="post" class="formulaire" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alerte alerte--error">{{ form.non_field_errors|first }}</div>
+            {% endif %}
+
+            <div class="champ">
+                <label for="{{ form.mot_de_passe.id_for_label }}" class="champ__label">
+                    {{ form.mot_de_passe.label }}
+                </label>
+                <div class="champ-mdp">
+                    {{ form.mot_de_passe }}
+                    <button type="button" class="champ-mdp__bascule" id="mdp-bascule"
+                            data-champ="{{ form.mot_de_passe.id_for_label }}"
+                            aria-label="Afficher le mot de passe" aria-pressed="false">
+                        <i class="ti ti-eye"></i>
+                    </button>
+                </div>
+                {% if form.mot_de_passe.errors %}
+                    <p class="champ__erreur">{{ form.mot_de_passe.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="bouton">Accéder</button>
+        </form>
+    {% endif %}
+</div>
+
+{% endblock %}

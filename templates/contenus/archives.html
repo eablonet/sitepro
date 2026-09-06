@@ -47,18 +47,24 @@
                                 <article class="carte-doc">
                                     <div class="carte-doc__header">
                                         <h3 class="carte-doc__titre">{{ cours.titre }}</h3>
-                                        <div class="carte-doc__docs-principaux">
-                                            <a href="{{ cours.fichier_accompagnement.url }}" class="doc-icone" title="Document d'accompagnement">
-                                                <i class="ti ti-file"></i><span>Cours</span>
-                                            </a>
-                                            <a href="{{ cours.fichier_td.url }}" class="doc-icone" title="Feuille de TD">
-                                                <i class="ti ti-file"></i><span>TD</span>
-                                            </a>
-                                        </div>
                                     </div>
 
                                     {% if cours.description %}
                                         <p class="carte-doc__description">{{ cours.description|truncatewords:25|urlize }}</p>
+                                    {% endif %}
+
+                                    {% if cours.fichiers_disponibles %}
+                                        <div class="carte-doc__lies-liste">
+                                            {% for doc in cours.fichiers_disponibles %}
+                                                <a href="{{ doc.fichier.url }}" class="carte-doc__lie-item">
+                                                    <span class="carte-doc__lie-item-label">
+                                                        <i class="ti ti-file"></i>
+                                                        {{ doc.libelle }}
+                                                    </span>
+                                                    <i class="ti ti-download"></i>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
                                     {% endif %}
 
                                     {% if cours.documents_lies %}
