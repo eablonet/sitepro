@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Cahier de calcul{% endblock %}
+{% block description %}Exercices de calcul hebdomadaires pour la classe de TSI1.{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Cahier de calcul</h1>
+<p class="page-intro">Une nouvelle série d'exercices est publiée chaque semaine.</p>
+
+<div class="carte-doc__lies-liste">
+    {% for cahier in cahiers %}
+        <a href="{{ cahier.fichier_sujet.url }}" class="carte-doc__lie-item">
+            <span class="carte-doc__lie-item-label">
+                <i class="ti ti-file"></i>
+                {{ cahier }}
+            </span>
+            <i class="ti ti-download"></i>
+        </a>
+        {% if cahier.fichier_corrige %}
+            <a href="{{ cahier.fichier_corrige.url }}" class="carte-doc__lie-item">
+                <span class="carte-doc__lie-item-label">
+                    <i class="ti ti-checkbox"></i>
+                    {{ cahier }} — corrigé
+                </span>
+                <i class="ti ti-download"></i>
+            </a>
+        {% endif %}
+    {% empty %}
+        <p>Aucun cahier de calcul publié pour le moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

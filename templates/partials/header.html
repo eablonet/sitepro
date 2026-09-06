@@ -36,8 +36,14 @@
           {% endfor %}
         </div>
       </div>
-      <a href="{% url 'contenus:liste_fiches_outils' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_fiches_outils' %} site-nav__link--active{% endif %}">Fiches outils</a>
+      <a href="{% url 'contenus:liste_fiches_outils' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_fiches_outils' %} site-nav__link--active{% endif %}">
+        Fiches outils
+      </a>
       
+      <a href="{% url 'contenus:liste_cahiers_calcul' %}" class="site-nav__link{% if request.resolver_match.url_name == 'liste_cahiers_calcul' %} site-nav__link--active{% endif %}">
+        Cahier de calcul
+      </a>
+
       <div class="nav-item nav-item--dropdown">
           <a href="{% url 'contenus:liste_programmes_colles' %}"
             class="site-nav__link site-nav__link--trigger{% if 'colles' in request.path %} site-nav__link--active{% endif %}">
@@ -55,6 +61,7 @@
               </a>
           </div>
       </div>
+
 
       <span class="site-nav__divider"></span>
 
@@ -96,6 +103,8 @@
     </div>
     
     <a href="{% url 'contenus:liste_fiches_outils' %}" class="mobile-nav__link">Fiches outils <i class="ti ti-chevron-right"></i></a>
+
+    <a href="{% url 'contenus:liste_cahiers_calcul' %}" class="mobile-nav__link">Cahier de calcul <i class="ti ti-chevron-right"></i></a>
 
     <div class="mobile-nav__accordion">
         <button type="button" class="mobile-nav__accordion-trigger" aria-expanded="false" aria-controls="mobile-colles-panel">

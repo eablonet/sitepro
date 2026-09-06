@@ -7,7 +7,8 @@ from .models import (
     Devoir,
     FicheOutil,
     FichierOutil,
-    ProgrammeColle
+    ProgrammeColle,
+    CahierCalcul
 )
 
 # Register your models here.
@@ -79,6 +80,13 @@ from .models import (
 
 @admin.register(ProgrammeColle)
 class ProgrammeColleAdmin(admin.ModelAdmin):
+    list_display = ('semaine', 'titre', 'annee_scolaire', 'date_publication', 'publie')
+    list_filter = ('annee_scolaire', 'publie')
+    search_fields = ('titre',)
+    
+    
+@admin.register(CahierCalcul)
+class CahierCalculAdmin(admin.ModelAdmin):
     list_display = ('semaine', 'titre', 'annee_scolaire', 'date_publication', 'publie')
     list_filter = ('annee_scolaire', 'publie')
     search_fields = ('titre',)

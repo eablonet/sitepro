@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire, ProgrammeColle
+from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire, ProgrammeColle, CahierCalcul
 
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -288,3 +288,11 @@ def liste_programmes_colles(request):
 
 
 
+def liste_cahiers_calcul(request):
+    cahiers = CahierCalcul.objects.filter(
+        publie=True,
+        annee_scolaire__est_courante=True
+    )
+    return render(request, 'contenus/liste_cahiers_calcul.html', {
+        'cahiers': cahiers,
+    })

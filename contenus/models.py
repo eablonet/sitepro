@@ -319,3 +319,38 @@ class ProgrammeColle(models.Model):
 
     def __str__(self):
         return f"S{self.semaine} — {self.titre}"
+    
+class CahierCalcul(models.Model):
+    semaine = models.PositiveIntegerField(
+        help_text="Numéro de la semaine (1, 2, 3…)"
+    )
+    titre = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Facultatif. Ex : 'Dérivées et primitives'"
+    )
+    fichier_sujet = models.FileField(upload_to='calcul/sujets/')
+    fichier_corrige = models.FileField(
+        upload_to='calcul/corriges/',
+        blank=True,
+        null=True
+    )
+
+    annee_scolaire = models.ForeignKey(
+        AnneeScolaire,
+        on_delete=models.PROTECT,
+        related_name='cahiers_calcul',
+        default=annee_scolaire_courante
+    )
+    date_publication = models.DateTimeField(auto_now_add=True)
+    publie = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-semaine']
+        verbose_name = "Cahier de calcul"
+        verbose_name_plural = "Cahiers de calcul"
+
+    def __str__(self):
+        if self.titre:
+            return f"S{self.semaine} — {self.titre}"
+        return f"Semaine {self.semaine}"

@@ -15,4 +15,5 @@ urlpatterns = [
     path('confidentialite/', views.confidentialite, name='confidentialite'),
     path('contact/', views.contact, name='contact'),
     path('colles/programmes/', views.liste_programmes_colles, name='liste_programmes_colles'),
+    path('cahier-calcul/', views.liste_cahiers_calcul, name='liste_cahiers_calcul'),
 ]
