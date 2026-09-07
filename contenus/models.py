@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils.text import slugify
 
-# Create your models here.
+from .fichiers import CheminMedia, StockageEcrasement
+
+stockage_ecrasement = StockageEcrasement()
 
 ## quelques fonctions utiles
-# foncitonne qui retorune l'année scolaire courante
+# fonctionne qui retourne l'année scolaire courante
 def annee_scolaire_courante():
     """Retourne l'id de l'année scolaire marquée comme courante (ou None)."""
     annee = AnneeScolaire.objects.filter(est_courante=True).first()
@@ -85,19 +87,31 @@ class Cours(models.Model):
 
     fichier_cours_prof = models.FileField(
         "Fiche de cours — version complète",
-        upload_to='cours/fiches/', blank=True, null=True)
+        upload_to=CheminMedia('cours', 'cours-prof'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+    )
     fichier_cours_eleve = models.FileField(
         "Fiche de cours — version élève",
-        upload_to='cours/fiches/', blank=True, null=True)
+        upload_to=CheminMedia('cours', 'cours-eleve'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+    )
     fichier_td_prof = models.FileField(
         "Fiche de TD — version complète",
-        upload_to='cours/td/', blank=True, null=True)
+        upload_to=CheminMedia('cours', 'td-prof'),
+        storage=stockage_ecrasement,
+        blank=True, null=True)
     fichier_td_eleve = models.FileField(
         "Fiche de TD — version élève",
-        upload_to='cours/td/', blank=True, null=True)
+        upload_to=CheminMedia('cours', 'td-eleve'),
+        storage=stockage_ecrasement,
+        blank=True, null=True)
     fichier_manip = models.FileField(
         "Manipulation de cours",
-        upload_to='cours/manips/', blank=True, null=True)
+        upload_to=CheminMedia('cours', 'manip'),
+        storage=stockage_ecrasement,
+        blank=True, null=True)
 
     theme = models.ForeignKey(Theme, on_delete=models.PROTECT, related_name='cours')
     annee_scolaire = models.ForeignKey(
@@ -150,13 +164,27 @@ class TP(models.Model):
         help_text="Si vide sera complété automatiquement. Ex 'TP1_24-25' pour le TP 1 de l'année 2024-2025"
     )
     description = models.TextField(blank=True)
-    fichier_sujet = models.FileField(upload_to='tp/sujets/')
+    fichier_sujet = models.FileField(
+        upload_to=CheminMedia('tp', 'tp-eleve'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+        )
     fichier_corrige = models.FileField(
-        upload_to='tp/corriges/',
-        blank=True,
-        null=True
+        upload_to=CheminMedia('tp', 'tp-prof'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
     )
-
+    fichier_python_sujet = models.FileField(
+        upload_to=CheminMedia('tp', 'tp-eleve-python'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+        )
+    fichier_python_corrige = models.FileField(
+        upload_to=CheminMedia('tp', 'tp-prof-python'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+    )
+    
     themes = models.ManyToManyField(
         Theme,
         related_name='tp',
@@ -209,11 +237,15 @@ class Devoir(models.Model):
         help_text="Si vide sera complété automatiquement. Ex 'DM-3_24-25' pour le DM 3 de l'année 2024-2025"
     )
 
-    fichier_sujet = models.FileField(upload_to='devoirs/sujets/')
+    fichier_sujet = models.FileField(
+        upload_to=CheminMedia('devoirs', 'sujet'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
+    )
     fichier_correction = models.FileField(
-        upload_to='devoirs/corrections/',
-        blank=True,
-        null=True
+        upload_to=CheminMedia('devoirs', 'correction'),
+        storage=stockage_ecrasement,
+        blank=True, null=True
     )
 
     themes = models.ManyToManyField(
@@ -279,7 +311,10 @@ class FichierOutil(models.Model):
         on_delete=models.CASCADE,
         related_name='fichiers'
     )
-    fichier = models.FileField(upload_to='fiches_outils/')
+    fichier = models.FileField(
+        upload_to=CheminMedia('fiches_outils', ''),
+        storage=stockage_ecrasement,
+    )
     legende = models.CharField(
         max_length=150,
         blank=True,
@@ -301,7 +336,11 @@ class ProgrammeColle(models.Model):
         max_length=200,
         help_text="Ex : 'Semaine 12 — Électrocinétique et mécanique'"
     )
-    fichier = models.FileField(upload_to='colles/programmes/')
+    fichier = models.FileField(
+        upload_to=CheminMedia('colles/programmes/', ''),
+        storage=stockage_ecrasement,
+        blank=True, null=True,
+    )
 
     annee_scolaire = models.ForeignKey(
         AnneeScolaire,
@@ -329,9 +368,13 @@ class CahierCalcul(models.Model):
         blank=True,
         help_text="Facultatif. Ex : 'Dérivées et primitives'"
     )
-    fichier_sujet = models.FileField(upload_to='calcul/sujets/')
+    fichier_sujet = models.FileField(
+        upload_to=CheminMedia('cahier-calcul/', 'sujet'),
+        storage=stockage_ecrasement,
+        blank=True, null=True,
+    )
     fichier_corrige = models.FileField(
-        upload_to='calcul/corriges/',
+        upload_to=CheminMedia('cahier-calcul/', 'correction'),
         blank=True,
         null=True
     )

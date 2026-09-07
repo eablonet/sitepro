@@ -47,6 +47,10 @@ class CoursAdmin(admin.ModelAdmin):
             'fields': ('tp_lies', 'devoirs_lies')
         }),
     )
+    
+    # slug en readonly après création
+    def get_readonly_fields(self, request, obj=None):
+        return ['slug'] if obj else []
 
 @admin.register(TP)
 class TPAdmin(admin.ModelAdmin):
