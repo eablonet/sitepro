@@ -8,7 +8,8 @@ from .models import (
     FicheOutil,
     FichierOutil,
     ProgrammeColle,
-    CahierCalcul
+    CahierCalcul,
+    DocumentPermanent
 )
 
 # Register your models here.
@@ -94,3 +95,7 @@ class CahierCalculAdmin(admin.ModelAdmin):
     list_display = ('semaine', 'titre', 'annee_scolaire', 'date_publication', 'publie')
     list_filter = ('annee_scolaire', 'publie')
     search_fields = ('titre',)
+    
+@admin.register(DocumentPermanent)
+class DocumentPermanentAdmin(admin.ModelAdmin):
+    list_display = ('type', 'date_maj')

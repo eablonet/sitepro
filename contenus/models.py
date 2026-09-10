@@ -403,3 +403,34 @@ class CahierCalcul(models.Model):
         if self.titre:
             return f"S{self.semaine} — {self.titre}"
         return f"Semaine {self.semaine}"
+    
+    
+class DocumentPermanent(models.Model):
+    class TypeDocument(models.TextChoices):
+        FORMULES = 'formules', 'Formules'
+        QUESTIONS = 'questions', 'Questions de cours'
+
+    type = models.CharField(
+        max_length=20,
+        choices=TypeDocument.choices,
+        unique=True,
+        help_text="Un seul document par type."
+    )
+    fichier = models.FileField(
+        upload_to='colle/documents/'
+    )
+    date_maj = models.DateTimeField(auto_now=True)
+    annee_scolaire = models.ForeignKey(
+            AnneeScolaire,
+            on_delete=models.PROTECT,
+            related_name='documents_permanents',
+            default=annee_scolaire_courante
+        )
+
+    class Meta:
+        ordering = ['type']
+        verbose_name = "Document permanent"
+        verbose_name_plural = "Documents permanents"
+
+    def __str__(self):
+        return self.get_type_display()

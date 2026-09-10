@@ -1,5 +1,10 @@
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from .models import Theme, TP, Devoir, Cours, FicheOutil, AnneeScolaire, ProgrammeColle, CahierCalcul
+from .models import (
+    Theme, TP, Devoir, Cours, FicheOutil,
+    AnneeScolaire, ProgrammeColle, CahierCalcul,
+    DocumentPermanent
+)
 
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -295,4 +300,15 @@ def liste_cahiers_calcul(request):
     )
     return render(request, 'contenus/liste_cahiers_calcul.html', {
         'cahiers': cahiers,
+    })
+    
+    
+def document_permanent(request, type_document):
+    if type_document not in DocumentPermanent.TypeDocument.values:
+        raise Http404
+    document = DocumentPermanent.objects.filter(type=type_document).first()
+    libelle = DocumentPermanent.TypeDocument(type_document).label
+    return render(request, 'contenus/document_permanent.html', {
+        'document': document,
+        'libelle': libelle,
     })

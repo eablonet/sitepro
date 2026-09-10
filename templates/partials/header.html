@@ -51,14 +51,22 @@
               <i class="ti ti-chevron-down"></i>
           </a>
           <div class="dropdown-panel">
-              <a href="{% url 'contenus:liste_programmes_colles' %}" class="dropdown-panel__item">
-                  <i class="ti ti-file"></i>
-                  Programmes
-              </a>
-              <a href="{% url 'colloscope:colloscope' %}" class="dropdown-panel__item">
-                <i class="ti ti-lock"></i>
-                Colloscope
-              </a>
+            <a href="{% url 'colloscope:colloscope' %}" class="dropdown-panel__item">
+              <i class="ti ti-lock"></i>
+              Colloscope
+            </a>
+            <a href="{% url 'contenus:liste_programmes_colles' %}" class="dropdown-panel__item">
+                <i class="ti ti-file"></i>
+                Programmes
+            </a>
+            <a href="{% url 'contenus:formules' %}" class="dropdown-panel__item">
+                <i class="ti ti-file"></i>
+                Formules
+            </a>
+            <a href="{% url 'contenus:questions' %}" class="dropdown-panel__item">
+                <i class="ti ti-file"></i>
+                Questions de cours
+            </a>
           </div>
       </div>
 
@@ -112,8 +120,10 @@
             <i class="ti ti-chevron-down"></i>
         </button>
         <div class="mobile-nav__accordion-panel" id="mobile-colles-panel" hidden>
-            <a href="{% url 'contenus:liste_programmes_colles' %}" class="mobile-nav__sublink">Programmes</a>
-            <a href="{% url 'colloscope:colloscope' %}" class="mobile-nav__sublink">Colloscope</a>
+          <a href="{% url 'colloscope:colloscope' %}" class="mobile-nav__sublink">Colloscope</a>
+          <a href="{% url 'contenus:liste_programmes_colles' %}" class="mobile-nav__sublink">Programmes</a>
+          <a href="{% url 'contenus:formules' %}" class="mobile-nav__sublink">Formules</a>
+          <a href="{% url 'contenus:questions' %}" class="mobile-nav__sublink">Questions de cours</a>
         </div>
     </div>
 

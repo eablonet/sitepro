@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ libelle }}{% endblock %}
+{% block description %}{{ libelle }} pour la classe préparatoire TSI1.{% endblock %}
+
+{% block content %}
+
+<div class="doc-entete">
+    <div>
+        <h1 class="page-title">{{ libelle }}</h1>
+        {% if document %}
+            <p class="page-intro">Mis à jour le {{ document.date_maj|date:"d F Y" }}.</p>
+        {% endif %}
+    </div>
+    {% if document %}
+        <a href="{{ document.fichier.url }}" class="bouton" download>
+            <i class="ti ti-download"></i>
+            Télécharger
+        </a>
+    {% endif %}
+</div>
+
+{% if document %}
+    <div class="pdf-cadre">
+        <iframe src="{{ document.fichier.url }}" title="{{ libelle }}"></iframe>
+        <p class="pdf-repli">
+            L'aperçu ne s'affiche pas sur tous les appareils, en particulier
+            sur iPhone et iPad.
+            <a href="{{ document.fichier.url }}">Ouvrir le document</a>
+            dans un nouvel onglet.
+        </p>
+    </div>
+{% else %}
+    <p>Ce document n'est pas encore disponible.</p>
+{% endif %}
+
+{% endblock %}

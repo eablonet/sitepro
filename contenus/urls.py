@@ -16,4 +16,6 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('colles/programmes/', views.liste_programmes_colles, name='liste_programmes_colles'),
     path('cahier-calcul/', views.liste_cahiers_calcul, name='liste_cahiers_calcul'),
+    path('colles/formules/', views.document_permanent, {'type_document': 'formules'}, name='formules'),
+    path('colles/questions-de-cours/', views.document_permanent, {'type_document': 'questions'}, name='questions'),
 ]
