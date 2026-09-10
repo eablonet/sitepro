@@ -336,6 +336,7 @@ class ProgrammeColle(models.Model):
         max_length=200,
         help_text="Ex : 'Semaine 12 — Électrocinétique et mécanique'"
     )
+    slug = models.SlugField(max_length=210, unique=True, blank=True)
     fichier = models.FileField(
         upload_to=CheminMedia('colles/programmes/', ''),
         storage=stockage_ecrasement,
@@ -358,6 +359,11 @@ class ProgrammeColle(models.Model):
 
     def __str__(self):
         return f"S{self.semaine} — {self.titre}"
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slug_avec_annee(self.titre, self.annee_scolaire)
+        super().save(*args, **kwargs)
     
 class CahierCalcul(models.Model):
     semaine = models.PositiveIntegerField(
