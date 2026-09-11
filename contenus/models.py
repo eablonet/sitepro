@@ -407,6 +407,11 @@ class CahierCalcul(models.Model):
             return f"S{self.semaine} — {self.titre}"
         return f"Semaine {self.semaine}"
     
+    def save(self, *args, **kwargs):
+            if not self.slug:
+                self.slug = slug_avec_annee(self.titre, self.annee_scolaire)
+            super().save(*args, **kwargs)
+    
     
 class DocumentPermanent(models.Model):
     class TypeDocument(models.TextChoices):
