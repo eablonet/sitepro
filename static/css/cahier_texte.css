@@ -1,0 +1,215 @@
+/* ============================================================
+   CAHIER DE TEXTE — version PC uniquement.
+   Les media queries tablette et mobile viendront à la fin :
+   elles ne toucheront que .ct-grille et .ct-jour.
+
+   Rappel de la règle d'accent : le vert signale ce qui se clique.
+   L'emphase de la semaine courante est donc neutre (bordure
+   renforcée + fond carte), jamais verte.
+   ============================================================ */
+
+/* --- Barre de mise en évidence ------------------------------ */
+
+.ct-evidence {
+    margin-bottom: var(--space-xl);
+}
+
+.ct-evidence__colonnes {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.ct-evidence__colonne {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: flex-start;
+}
+
+/* --- Boutons de défilement (cliquables : accent légitime) ---- */
+
+.ct-defilement {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-sm) 0;
+}
+
+.ct-bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font: var(--text-ui);
+    color: var(--accent);
+    text-decoration: none;
+    background: var(--bg-card);
+    border: 0.5px solid var(--accent);
+    border-radius: 999px;
+    padding: var(--space-sm) var(--space-md);
+}
+
+.ct-bouton i {
+    font-size: 18px;
+}
+
+.ct-bouton:hover,
+.ct-bouton:focus-visible {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #FFFFFF;
+}
+
+/* --- La semaine --------------------------------------------- */
+
+.ct-semaine {
+    border: 0.5px solid transparent;
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.ct-semaine--passee {
+    opacity: 0.5;
+}
+
+.ct-semaine--a_venir {
+    background: var(--bg-subtle);
+}
+
+.ct-semaine--courante {
+    background: var(--bg-card);
+    border-color: var(--border-strong);
+}
+
+.ct-semaine__entete {
+    display: flex;
+    justify-content: space-between;
+    font: var(--text-meta);
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+}
+
+.ct-semaine--courante .ct-semaine__entete {
+    color: var(--text-primary);
+}
+
+.ct-vacances {
+    font: var(--text-meta);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* --- La grille des jours ------------------------------------ */
+
+.ct-grille {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) 8rem;
+    gap: var(--space-sm);
+}
+
+.ct-jour {
+    position: relative;   /* ancre le panneau déplié */
+}
+
+.ct-jour--hebdo {
+    border-left: 0.5px solid var(--border);
+    padding-left: var(--space-sm);
+}
+
+.ct-jour__date {
+    display: block;
+    font: var(--text-meta);
+    color: var(--text-muted);
+    padding-bottom: var(--space-xs);
+}
+
+.ct-jour--aujourdhui .ct-jour__date {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* --- Le bloc d'une entrée ----------------------------------- */
+
+.ct-bloc {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    font: var(--text-ui);
+    color: var(--text-secondary);
+}
+
+.ct-bloc:last-child {
+    margin-bottom: 0;
+}
+
+.ct-bloc:hover {
+    border-color: var(--border-strong);
+}
+
+.ct-bloc__titre {
+    display: block;
+    color: var(--text-primary);
+}
+
+.ct-bloc__titre--lien {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.ct-bloc__titre--lien:hover,
+.ct-bloc__titre--lien:focus-visible {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.ct-bloc--evidence {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+}
+
+.ct-bloc--ferie,
+.ct-bloc--annulee {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* --- Le dépliage : hors flux, la page ne bouge jamais -------- */
+
+.ct-bloc__bascule {
+    font: var(--text-meta);
+    color: var(--text-muted);
+    cursor: pointer;
+    list-style: none;
+    margin-top: var(--space-xs);
+}
+
+.ct-bloc__bascule::-webkit-details-marker {
+    display: none;
+}
+
+.ct-bloc__bascule:hover {
+    color: var(--text-secondary);
+}
+
+.ct-bloc__detail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: var(--space-sm);
+    font: var(--text-meta);
+    color: var(--text-secondary);
+    box-shadow: 0 4px 12px rgba(30, 46, 30, 0.08);
+}
+
+/* Confort souris : survol seulement là où un vrai pointeur existe. */
+@media (hover: hover) and (pointer: fine) {
+    .ct-bloc:hover .ct-bloc__repli > .ct-bloc__detail {
+        display: block;
+    }
+}

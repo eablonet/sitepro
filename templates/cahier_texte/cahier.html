@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cahier de texte{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/cahier_texte.css' %}">{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Cahier de texte</h1>
+
+{% if not semaines %}
+  <p class="page-intro">Le cahier de texte n'est pas encore rempli.</p>
+{% else %}
+
+<div class="ct-defilement">
+  {% if peut_remonter %}
+    <a href="?decalage={{ decalage|add:'-1' }}{{ suffixe_evidence }}"
+       class="ct-bouton" aria-label="Reculer d'une semaine">
+      <i class="ti ti-chevron-up" aria-hidden="true"></i> Semaine précédente
+    </a>
+  {% endif %}
+</div>
+
+{% for semaine in semaines %}
+<section class="ct-semaine ct-semaine--{{ semaine.etat }}"
+         {% if semaine.etat == 'courante' %}aria-current="date"{% endif %}>
+
+  <header class="ct-semaine__entete">
+    <span>{% if semaine.objet.numero %}Semaine {{ semaine.objet.numero }} · {% endif %}{{ semaine.libelle_dates }}</span>
+    <span>sem. {{ semaine.objet.date_lundi|date:"W" }}</span>
+  </header>
+
+  {% if semaine.objet.statut == 'VACANCES' %}
+    <p class="ct-vacances">{{ semaine.objet.libelle|default:"Vacances" }}</p>
+  {% else %}
+  <div class="ct-grille">
+    {% for jour in semaine.jours %}
+      <div class="ct-jour{% if jour.vide %} ct-jour--vide{% endif %}{% if jour.aujourdhui %} ct-jour--aujourdhui{% endif %}">
+        <span class="ct-jour__date">{{ jour.date|date:"D j"|lower }}</span>
+        {% for entree in jour.entrees %}{% include "cahier_texte/_entree.html" %}{% endfor %}
+      </div>
+    {% endfor %}
+
+    <div class="ct-jour ct-jour--hebdo">
+      <span class="ct-jour__date">CC · colles</span>
+      {% for entree in semaine.hebdomadaires %}{% include "cahier_texte/_entree.html" %}{% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endfor %}
+
+<div class="ct-defilement">
+  {% if peut_descendre %}
+    <a href="?decalage={{ decalage|add:'1' }}{{ suffixe_evidence }}"
+       class="ct-bouton" aria-label="Avancer d'une semaine">
+      Semaine suivante <i class="ti ti-chevron-down" aria-hidden="true"></i>
+    </a>
+  {% endif %}
+</div>
+
+
+<nav class="ct-evidence" aria-label="Mise en évidence par rubrique">
+  <span class="filtres-label">Mettre en évidence</span>
+  <div class="ct-evidence__colonnes">
+    {% for colonne in colonnes_evidence %}
+      <div class="ct-evidence__colonne">
+        {% for puce in colonne %}
+          <a href="{{ puce.url }}"
+             class="chip{% if puce.active %} chip--active{% endif %}"
+             aria-pressed="{% if puce.active %}true{% else %}false{% endif %}">{{ puce.libelle }}</a>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</nav>
+
+{% endif %}
+{% endblock %}

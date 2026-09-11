@@ -374,6 +374,9 @@ class CahierCalcul(models.Model):
         blank=True,
         help_text="Facultatif. Ex : 'Dérivées et primitives'"
     )
+    
+    slug = models.SlugField(max_length=210, unique=True, blank=True)
+    
     fichier_sujet = models.FileField(
         upload_to=CheminMedia('cahier-calcul/', 'sujet'),
         storage=stockage_ecrasement,

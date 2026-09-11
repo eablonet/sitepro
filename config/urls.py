@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('colloscope.urls')),
     path('', include('contenus.urls')),
+    path('', include('cahier_texte.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,30 @@
+{% comment %}
+`cahier_texte/templates/cahier_texte/_entree.html`
+
+Chaque entrée est un bloc arrondi autonome : deux séances le même jour se
+lisent comme deux objets distincts, pas comme deux lignes d'un même pavé.
+
+Le bloc n'est cliquable que si `entree.url` est renseignée — donc jamais
+quand aucun document n'est encore lié, ni quand le fichier élève n'est pas
+déposé.
+{% endcomment %}
+
+{% if entree.statut != 'NORMALE' %}
+  <p class="ct-bloc ct-bloc--{{ entree.statut|lower }}">{{ entree.titre_affiche }}</p>
+
+{% else %}
+  <article class="ct-bloc{% if entree.rubrique in evidence %} ct-bloc--evidence{% endif %}">
+    {% if entree.url %}
+      <a href="{{ entree.url }}" class="ct-bloc__titre ct-bloc__titre--lien">{{ entree.titre_affiche }}</a>
+    {% else %}
+      <span class="ct-bloc__titre">{{ entree.titre_affiche }}</span>
+    {% endif %}
+
+    {% if entree.detail %}
+      <details class="ct-bloc__repli">
+        <summary class="ct-bloc__bascule">détail</summary>
+        <div class="ct-bloc__detail">{{ entree.detail|linebreaksbr }}</div>
+      </details>
+    {% endif %}
+  </article>
+{% endif %}
