@@ -22,8 +22,8 @@
 </div>
 
 {% for semaine in semaines %}
-<section class="ct-semaine ct-semaine--{{ semaine.etat }}"
-         {% if semaine.etat == 'courante' %}aria-current="date"{% endif %}>
+<section class="ct-semaine ct-semaine--{{ semaine.etat }} ct-semaine--p{{ forloop.counter0 }}"
+        {% if semaine.etat == 'courante' %}aria-current="date"{% endif %}>
 
   <header class="ct-semaine__entete">
     <span>{% if semaine.objet.numero %}Semaine {{ semaine.objet.numero }} · {% endif %}{{ semaine.libelle_dates }}</span>
@@ -60,8 +60,9 @@
 </div>
 
 
-<nav class="ct-evidence" aria-label="Mise en évidence par rubrique">
-  <span class="filtres-label">Mettre en évidence</span>
+<nav class="ct-evidence{% if not evidence %} ct-evidence--inactive{% endif %}"
+     id="evidence" aria-label="Mise en évidence par rubrique">
+  <span class="filtres-label">Filtre par rubrique bis</span>
   <div class="ct-evidence__colonnes">
     {% for colonne in colonnes_evidence %}
       <div class="ct-evidence__colonne">

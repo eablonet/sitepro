@@ -8,25 +8,6 @@
    renforcée + fond carte), jamais verte.
    ============================================================ */
 
-/* --- Barre de mise en évidence ------------------------------ */
-
-.ct-evidence {
-    margin-bottom: var(--space-xl);
-}
-
-.ct-evidence__colonnes {
-    display: flex;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
-}
-
-.ct-evidence__colonne {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    align-items: flex-start;
-}
-
 /* --- Boutons de défilement (cliquables : accent légitime) ---- */
 
 .ct-defilement {
@@ -164,10 +145,7 @@
     text-decoration: underline;
 }
 
-.ct-bloc--evidence {
-    background: var(--accent-subtle);
-    border-color: var(--accent);
-}
+
 
 .ct-bloc--ferie,
 .ct-bloc--annulee {
@@ -212,4 +190,314 @@
     .ct-bloc:hover .ct-bloc__repli > .ct-bloc__detail {
         display: block;
     }
+}
+
+/* ------------------------------------------------------------
+   TABLETTE ET MOBILE — communs (≤ 1024 px)
+   La grille en colonnes devient une pile de rangées : un jour
+   par rangée, sa date dans une gouttière à gauche.
+   ------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+
+    .ct-grille {
+        display: block;
+    }
+
+    /* Les jours sans séance disparaissent. Le marquage est fait
+       côté serveur (ct-jour--vide), il ne reste qu'à masquer. */
+    .ct-jour--vide {
+        display: none;
+    }
+
+    .ct-jour {
+        display: grid;
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        gap: var(--space-sm);
+        padding: var(--space-xs) 0;
+    }
+
+    .ct-jour__date {
+        grid-column: 1;
+        grid-row: 1 / -1;
+        padding-bottom: 0;
+    }
+
+    /* Sans cette règle, les blocs se placeraient sous la date
+       plutôt qu'à sa droite. */
+    .ct-bloc {
+        grid-column: 2;
+    }
+
+    .ct-jour--hebdo {
+        border-left: none;
+        border-top: 0.5px solid var(--border);
+        padding-left: 0;
+        padding-top: var(--space-sm);
+        margin-top: var(--space-xs);
+    }
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE seul (≤ 768 px)
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    /* Deux semaines seulement : la courante et la suivante.
+       La semaine passée disparaît toujours ; la quatrième est
+       masquée par sa position. En début ou en fin d'année,
+       quand la fenêtre est bloquée contre une borne, la semaine
+       courante n'est plus en deuxième position et il peut en
+       rester trois — supprime cette seconde règle si ce cas
+       te gêne plus que l'inverse. */
+    .ct-semaine--passee {
+        display: none;
+    }
+
+    .ct-semaine--p3 {
+        display: none;
+    }
+
+    .ct-jour {
+        display: block;
+        padding: var(--space-sm) 0;
+    }
+
+    .ct-jour__date {
+        padding-bottom: var(--space-xs);
+    }
+
+    .ct-bloc {
+        margin-bottom: var(--space-sm);
+    }
+
+    /* Le panneau déplié déborde la carte sur les petites largeurs :
+       on le laisse dans le flux plutôt que de le superposer. */
+    .ct-bloc__detail {
+        position: static;
+        box-shadow: none;
+        margin-top: var(--space-xs);
+    }
+
+    .ct-bouton {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+
+
+/* ============================================================
+   CAHIER DE TEXTE — surcouche de la page d'édition.
+   Chargée APRÈS cahier_texte.css, dont elle réutilise tout.
+   ============================================================ */
+
+/* Le détail est toujours visible ici : en édition on veut voir
+   le contenu réel, pas un résumé à déplier. */
+.ct-bloc__detail-ouvert {
+    font: var(--text-meta);
+    color: var(--text-secondary);
+    margin-top: var(--space-xs);
+}
+
+.ct-bloc--editable {
+    border-style: dashed;
+}
+
+.ct-edition__bascule,
+.ct-ajout__bascule {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font: var(--text-meta);
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+    margin-top: var(--space-xs);
+}
+
+.ct-edition__bascule::-webkit-details-marker,
+.ct-ajout__bascule::-webkit-details-marker {
+    display: none;
+}
+
+.ct-edition__bascule:hover,
+.ct-ajout__bascule:hover {
+    color: var(--accent-hover);
+}
+
+/* Le formulaire sort du flux, comme le panneau de détail de la page
+   publique : la grille ne se déforme pas quand on ouvre une case. */
+.ct-formulaire {
+    position: absolute;
+    left: 0;
+    z-index: 20;
+    width: 22rem;
+    max-width: 90vw;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    box-shadow: 0 4px 16px rgba(30, 46, 30, 0.14);
+}
+
+.ct-formulaire p {
+    margin-bottom: var(--space-sm);
+}
+
+.ct-formulaire label {
+    display: block;
+    font: var(--text-meta);
+    color: var(--text-muted);
+}
+
+.ct-formulaire input[type="text"],
+.ct-formulaire select,
+.ct-formulaire textarea {
+    width: 100%;
+    font: var(--text-ui);
+    padding: var(--space-xs) var(--space-sm);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-page);
+}
+
+.ct-formulaire__actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.ct-bouton--danger {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.ct-bouton--danger:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #FFFFFF;
+}
+
+/* Le formulaire d'ajout, lui, reste dans le flux : il est en bas de
+   semaine, il n'a rien à recouvrir. */
+.ct-ajout .ct-formulaire {
+    position: static;
+    width: auto;
+    box-shadow: none;
+    margin-top: var(--space-sm);
+}
+
+.ct-messages {
+    list-style: none;
+    margin-bottom: var(--space-md);
+}
+
+.ct-message {
+    font: var(--text-ui);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-xs);
+}
+
+.ct-message--success {
+    background: var(--accent-subtle);
+    color: var(--accent);
+}
+
+.ct-message--warning,
+.ct-message--error {
+    background: #FBEAE8;
+    color: var(--danger);
+}
+
+
+
+/* Le liseré gauche porte la couleur. Un fond entièrement teinté
+   ferait huit pavés colorés par semaine et rendrait la grille
+   illisible ; le liseré se repère aussi bien et reste discret. */
+.ct-bloc {
+    border-left-width: 3px;
+    border-left-style: solid;
+    border-left-color: var(--border-strong);
+}
+
+.ct-bloc__rubrique {
+    display: block;
+    font: var(--text-meta);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.ct-bloc--cours {
+    border-left-color: var(--rub-cours);
+}
+
+.ct-bloc--cours .ct-bloc__rubrique {
+    color: var(--rub-cours);
+}
+
+.ct-bloc--td {
+    border-left-color: var(--rub-td);
+}
+
+.ct-bloc--td .ct-bloc__rubrique {
+    color: var(--rub-td);
+}
+
+.ct-bloc--tp {
+    border-left-color: var(--rub-tp);
+}
+
+.ct-bloc--tp .ct-bloc__rubrique {
+    color: var(--rub-tp);
+}
+
+.ct-bloc--ds {
+    border-left-color: var(--rub-ds);
+}
+
+.ct-bloc--ds .ct-bloc__rubrique {
+    color: var(--rub-ds);
+}
+
+.ct-bloc--dm {
+    border-left-color: var(--rub-dm);
+}
+
+.ct-bloc--dm .ct-bloc__rubrique {
+    color: var(--rub-dm);
+}
+
+.ct-bloc--ic {
+    border-left-color: var(--rub-ic);
+}
+
+.ct-bloc--ic .ct-bloc__rubrique {
+    color: var(--rub-ic);
+}
+
+.ct-bloc--pc {
+    border-left-color: var(--rub-pc);
+}
+
+.ct-bloc--pc .ct-bloc__rubrique {
+    color: var(--rub-pc);
+}
+
+.ct-bloc--cc {
+    border-left-color: var(--rub-cc);
+}
+
+.ct-bloc--cc .ct-bloc__rubrique {
+    color: var(--rub-cc);
+}
+
+/* AP : volontairement neutre. */
+.ct-bloc--ap .ct-bloc__rubrique {
+    color: var(--text-muted);
 }

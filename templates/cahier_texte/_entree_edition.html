@@ -1,0 +1,25 @@
+{% comment %}
+`cahier_texte/templates/cahier_texte/_entree_edition.html`
+
+Le bloc garde exactement l'allure de la page publique — c'est ce qui permet
+de vérifier d'un coup d'œil ce que verront les élèves. Le formulaire est
+replié dans un <details> ouvert à la demande.
+{% endcomment %}
+
+<article class="ct-bloc ct-bloc--editable" id="entree-{{ entree.pk }}">
+  <span class="ct-bloc__titre">{{ entree.titre_affiche }}</span>
+  {% if entree.detail %}<div class="ct-bloc__detail-ouvert">{{ entree.detail|linebreaksbr }}</div>{% endif %}
+
+  <details class="ct-edition">
+    <summary class="ct-edition__bascule"><i class="ti ti-pencil" aria-hidden="true"></i> Modifier</summary>
+    <form method="post" action="{% url 'cahier_texte:entree_modifier' entree.pk %}" class="ct-formulaire">
+      {% csrf_token %}
+      <input type="hidden" name="retour" value="{{ request.get_full_path }}">
+      {{ entree.formulaire.as_p }}
+      <div class="ct-formulaire__actions">
+        <button type="submit" class="ct-bouton">Enregistrer</button>
+        <button type="submit" name="supprimer" value="1" class="ct-bouton ct-bouton--danger">Supprimer</button>
+      </div>
+    </form>
+  </details>
+</article>

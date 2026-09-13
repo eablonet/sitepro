@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cahier de texte — édition{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cahier_texte.css' %}">
+<link rel="stylesheet" href="{% static 'css/cahier_texte_edition.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Cahier de texte — édition</h1>
+<p class="page-intro">
+  <a href="{% url 'cahier_texte:cahier' %}">Voir la page telle que les élèves la voient</a>
+</p>
+
+{% if messages %}
+  <ul class="ct-messages">
+    {% for message in messages %}<li class="ct-message ct-message--{{ message.tags }}">{{ message }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<div class="ct-defilement">
+  {% if peut_remonter %}
+    <a href="?decalage={{ decalage|add:'-1' }}" class="ct-bouton">
+      <i class="ti ti-chevron-up" aria-hidden="true"></i> Semaine précédente
+    </a>
+  {% endif %}
+</div>
+
+{% for semaine in semaines %}
+<section class="ct-semaine ct-semaine--{{ semaine.etat }}" id="semaine-{{ semaine.objet.pk }}">
+
+  <header class="ct-semaine__entete">
+    <span>{% if semaine.objet.numero %}Semaine {{ semaine.objet.numero }} · {% endif %}{{ semaine.libelle_dates }}</span>
+    <span>sem. {{ semaine.objet.date_lundi|date:"W" }}</span>
+  </header>
+
+  <div class="ct-grille">
+    {% for jour in semaine.jours %}
+      <div class="ct-jour{% if jour.aujourdhui %} ct-jour--aujourdhui{% endif %}">
+        <span class="ct-jour__date">{{ jour.date|date:"D j"|lower }}</span>
+        {% for entree in jour.entrees %}
+          {% include "cahier_texte/_entree_edition.html" %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <div class="ct-jour ct-jour--hebdo">
+      <span class="ct-jour__date">CC · colles</span>
+      {% for entree in semaine.hebdomadaires %}
+        {% include "cahier_texte/_entree_edition.html" %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <details class="ct-ajout">
+    <summary class="ct-ajout__bascule"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter une entrée</summary>
+    <form method="post" action="{% url 'cahier_texte:entree_creer' semaine.objet.pk %}" class="ct-formulaire">
+      {% csrf_token %}
+      <input type="hidden" name="retour" value="{{ request.get_full_path }}">
+      {{ semaine.formulaire_ajout.as_p }}
+      <button type="submit" class="ct-bouton">Ajouter</button>
+    </form>
+  </details>
+
+</section>
+{% endfor %}
+
+<div class="ct-defilement">
+  {% if peut_descendre %}
+    <a href="?decalage={{ decalage|add:'1' }}" class="ct-bouton">
+      Semaine suivante <i class="ti ti-chevron-down" aria-hidden="true"></i>
+    </a>
+  {% endif %}
+</div>
+
+{% endblock %}

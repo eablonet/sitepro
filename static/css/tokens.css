@@ -118,17 +118,40 @@
 
 
     /* ----------------------------------------------------------
-     2e. COULEURS — STATUT
-     Une seule couleur de statut pour la v1.
-     Ne pas ajouter de couleur success ou warning avant d'en
-     avoir un besoin réel — chaque couleur supplémentaire
-     affaiblit les autres.
+    2e. COULEURS — STATUT
+    Une seule couleur de statut pour la v1.
+    Ne pas ajouter de couleur success ou warning avant d'en
+    avoir un besoin réel — chaque couleur supplémentaire
+    affaiblit les autres.
      ---------------------------------------------------------- */
 
     --danger: #C0392B;
     /* Messages d'erreur uniquement : document introuvable,
-     erreur de chargement PDF. Jamais utilisé comme décoration
+    erreur de chargement PDF. Jamais utilisé comme décoration
      ou pour attirer l'attention sur autre chose qu'une erreur. */
+
+
+    /* ----------------------------------------------------------
+    2e-bis. COULEURS — RUBRIQUES DU CAHIER DE TEXTE
+    Couleurs CATÉGORIELLES, jamais interactives : elles disent
+    de quelle nature est une séance, pas qu'on peut cliquer.
+    Le lien à l'intérieur d'un bloc reste en --accent.
+    La teinte porte la famille, la nuance le membre, et le
+    libellé de rubrique lève l'ambiguïté pour qui ne distingue
+    pas les nuances.
+    Usage strictement limité aux blocs du cahier de texte.
+    ---------------------------------------------------------- */
+    --rub-cours: #9A5B12;
+    --rub-td: #C2632B;
+
+    --rub-tp: #1D5F92;
+
+    --rub-ds: #55308A;
+    --rub-dm: #7A57B0;
+    --rub-ic: #9B7BC4;
+
+    --rub-pc: #157A72;
+    --rub-cc: #5F7A3A;
 
 
     /* ----------------------------------------------------------

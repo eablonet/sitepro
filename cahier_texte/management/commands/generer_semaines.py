@@ -12,6 +12,7 @@ from datetime import date, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
 
+from cahier_texte.services import generer_semaines
 from cahier_texte.models import SemaineCahier
 from contenus.models import AnneeScolaire
 
@@ -30,33 +31,20 @@ class Command(BaseCommand):
                             help="Ne pas pré-numéroter les semaines.")
 
     def handle(self, *args, **options):
-        debut, fin = options["debut"], options["fin"]
-
-        if debut.weekday() != 0 or fin.weekday() != 0:
-            raise CommandError("--debut et --fin doivent tomber un lundi.")
-        if fin < debut:
-            raise CommandError("--fin est antérieure à --debut.")
-
         try:
             annee = AnneeScolaire.objects.get(pk=options["annee_id"])
         except AnneeScolaire.DoesNotExist:
             raise CommandError(f"Aucune AnneeScolaire d'identifiant {options['annee_id']}.")
 
-        creees = existantes = 0
-        lundi, numero = debut, 1
-
-        while lundi <= fin:
-            _, cree = SemaineCahier.objects.get_or_create(
-                annee=annee,
-                date_lundi=lundi,
-                defaults={"numero": None if options["sans_numero"] else numero},
+        try:
+            creees, existantes = generer_semaines(
+                annee, options["debut"], options["fin"],
+                numeroter=not options["sans_numero"],
             )
-            creees += cree
-            existantes += not cree
-            lundi += timedelta(days=7)
-            numero += 1
-
+        except ValueError as erreur:
+            raise CommandError(str(erreur))
+ 
         self.stdout.write(self.style.SUCCESS(
             f"{creees} semaine(s) créée(s) pour {annee}."
-            + (f" {existantes} déjà présente(s), inchangée(s)." if existantes else "")
+            + (f" {existantes} déjà présente(s)." if existantes else "")
         ))

@@ -109,6 +109,13 @@ class EntreeCahier(models.Model):
     FICHIERS_ELEVE = {
         "COURS": ("cours", "fichier_cours_eleve"),
         "TD": ("cours", "fichier_td_eleve"),
+        "TP": ("tp", "fichier_sujet"),
+        "DS": ("devoir", "fichier_sujet"),
+        "DM": ("devoir", "fichier_sujet"),
+        "IC": ("devoir", "fichier_sujet"),
+        "CC": ("cahier_calcul", "fichier_sujet"),
+        "PC": ("programme_colle", "fichier"),
+        # AP -> FicheOutil : pas de champ fichier, voir `url` ci-dessous.
     }
 
     CHAMPS_LIAISON = (
@@ -226,30 +233,44 @@ class EntreeCahier(models.Model):
             return ""
         return self.texte
 
+
     @property
     def url(self):
-        """Cible du lien, ou chaîne vide si le bloc n'est lié à rien.
+        """Lien du bloc, ou chaîne vide s'il n'y a rien à ouvrir.
 
-        Pour un cours ou un TD, on vise directement le fichier élève : le
-        modèle `Cours` porte cinq fichiers, et l'élève n'a affaire qu'à un
-        seul d'entre eux selon la rubrique. Un fichier non encore déposé
-        rend simplement le bloc non cliquable — c'est le cas normal quand
-        le programme est publié avant les documents.
+        Trois raisons de ne pas produire de lien, toutes normales :
+        aucun document lié, document non publié, fichier pas encore déposé.
+        Le bloc s'affiche alors en texte simple.
         """
-        cible = self.FICHIERS_ELEVE.get(self.rubrique)
-        if cible is not None:
-            nom_fk, nom_fichier = cible
-            objet = getattr(self, nom_fk)
-            if objet is None:
-                return ""
-            fichier = getattr(objet, nom_fichier, None)
-            return fichier.url if fichier else ""
-
         objet = self.objet_lie
         if objet is None:
             return ""
+
+        # Le cahier de texte vise les fichiers directement : aucune vue ne
+        # filtre `publie` à notre place, donc on le fait ici. Sans ce test,
+        # un DS non publié verrait son sujet accessible par ce lien.
+        if getattr(objet, "publie", True) is False:
+            return ""
+
+        # Les fiches outil portent leurs fichiers dans un modèle lié.
+        # `.all()` et non `.first()` : seul `.all()` exploite le
+        # prefetch_related de la vue, `.first()` relancerait une requête
+        # par entrée affichée.
+        if self.rubrique == self.Rubrique.AP:
+            fichiers = list(objet.fichiers.all())
+            return fichiers[0].fichier.url if fichiers else ""
+
+        cible = self.FICHIERS_ELEVE.get(self.rubrique)
+        if cible is not None:
+            _, nom_fichier = cible
+            fichier = getattr(objet, nom_fichier, None)
+            if fichier:
+                return fichier.url
+
         get_url = getattr(objet, "get_absolute_url", None)
         return get_url() if get_url else ""
+
+
 
     def __str__(self):
         return f"{self.semaine} · {self.get_rubrique_display()} — {self.titre_affiche}"

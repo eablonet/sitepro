@@ -1,0 +1,22 @@
+{% extends "admin/change_list.html" %}
+{% comment %}
+`cahier_texte/templates/admin/cahier_texte/semainecahier/change_list.html`
+
+Ajoute deux boutons à la barre d'outils de la liste des semaines.
+Le chemin du fichier n'est pas arbitraire : c'est celui que Django cherche
+pour surcharger la liste de ce modèle précis.
+{% endcomment %}
+
+{% block object-tools-items %}
+  <li>
+    <a href="{% url 'admin:cahier_texte_semainecahier_generer' %}" class="addlink">
+      Générer les semaines
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'admin:cahier_texte_semainecahier_reinitialiser' %}" class="deletelink">
+      Réinitialiser
+    </a>
+  </li>
+  {{ block.super }}
+{% endblock %}
