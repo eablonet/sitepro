@@ -60,21 +60,5 @@
 </div>
 
 
-<nav class="ct-evidence{% if not evidence %} ct-evidence--inactive{% endif %}"
-     id="evidence" aria-label="Mise en évidence par rubrique">
-  <span class="filtres-label">Filtre par rubrique bis</span>
-  <div class="ct-evidence__colonnes">
-    {% for colonne in colonnes_evidence %}
-      <div class="ct-evidence__colonne">
-        {% for puce in colonne %}
-          <a href="{{ puce.url }}"
-             class="chip{% if puce.active %} chip--active{% endif %}"
-             aria-pressed="{% if puce.active %}true{% else %}false{% endif %}">{{ puce.libelle }}</a>
-        {% endfor %}
-      </div>
-    {% endfor %}
-  </div>
-</nav>
-
 {% endif %}
 {% endblock %}

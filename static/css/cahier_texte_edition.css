@@ -1,0 +1,116 @@
+/* ============================================================
+   CAHIER DE TEXTE — surcouche de la page d'édition.
+   Chargée APRÈS cahier_texte.css, dont elle réutilise tout.
+   ============================================================ */
+
+/* Le détail est toujours visible ici : en édition on veut voir
+   le contenu réel, pas un résumé à déplier. */
+.ct-bloc__detail-ouvert {
+    font: var(--text-meta);
+    color: var(--text-secondary);
+    margin-top: var(--space-xs);
+}
+
+.ct-bloc--editable {
+    border-style: dashed;
+}
+
+.ct-edition__bascule,
+.ct-ajout__bascule {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font: var(--text-meta);
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+    margin-top: var(--space-xs);
+}
+
+.ct-edition__bascule::-webkit-details-marker,
+.ct-ajout__bascule::-webkit-details-marker {
+    display: none;
+}
+
+.ct-edition__bascule:hover,
+.ct-ajout__bascule:hover {
+    color: var(--accent-hover);
+}
+
+/* Le formulaire sort du flux, comme le panneau de détail de la page
+   publique : la grille ne se déforme pas quand on ouvre une case. */
+.ct-formulaire {
+    position: absolute;
+    left: 0;
+    z-index: 20;
+    width: 22rem;
+    max-width: 90vw;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    box-shadow: 0 4px 16px rgba(30, 46, 30, 0.14);
+}
+
+.ct-formulaire p {
+    margin-bottom: var(--space-sm);
+}
+
+.ct-formulaire label {
+    display: block;
+    font: var(--text-meta);
+    color: var(--text-muted);
+}
+
+.ct-formulaire input[type="text"],
+.ct-formulaire select,
+.ct-formulaire textarea {
+    width: 100%;
+    font: var(--text-ui);
+    padding: var(--space-xs) var(--space-sm);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-page);
+}
+
+.ct-formulaire__actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.ct-bouton--danger {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.ct-bouton--danger:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #FFFFFF;
+}
+
+/* Le formulaire d'ajout, lui, reste dans le flux : il est en bas de
+   semaine, il n'a rien à recouvrir. */
+.ct-ajout .ct-formulaire {
+    position: static;
+    width: auto;
+    box-shadow: none;
+    margin-top: var(--space-sm);
+}
+
+.ct-messages {
+    list-style: none;
+    margin-bottom: var(--space-md);
+}
+
+.ct-message {
+    font: var(--text-ui);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-xs);
+}
+
+.ct-message--success { background: var(--accent-subtle); color: var(--accent); }
+.ct-message--warning,
+.ct-message--error   { background: #FBEAE8; color: var(--danger); }
