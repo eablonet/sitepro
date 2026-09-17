@@ -307,23 +307,42 @@ class FicheOutil(models.Model):
 
 class FichierOutil(models.Model):
     fiche_outil = models.ForeignKey(
-        FicheOutil,
-        on_delete=models.CASCADE,
-        related_name='fichiers'
-    )
+        FicheOutil, on_delete=models.CASCADE, related_name='fichiers')
+    slug = models.SlugField(max_length=60, blank=True, editable=False)
     fichier = models.FileField(
-        upload_to=CheminMedia('fiches_outils', ''),
+        upload_to=CheminMedia('fiches_outils', '', attribut='chemin_base'),
         storage=stockage_ecrasement,
     )
     legende = models.CharField(
-        max_length=150,
-        blank=True,
-        help_text="Ex : 'Formulaire' ou 'Annexe 1' — optionnel."
-    )
+        max_length=150, blank=True,
+        help_text="Ex : 'Formulaire' ou 'Annexe 1' — optionnel.")
     ordre = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['ordre', 'id']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['fiche_outil', 'slug'],
+                name='slug_unique_par_fiche_outil'),
+        ]
+
+    @property
+    def chemin_base(self):
+        return f"{self.fiche_outil.slug}-{self.slug}"
+
+    def _slug_disponible(self):
+        base = slugify(self.legende) or "fichier"
+        autres = FichierOutil.objects.filter(fiche_outil=self.fiche_outil)
+        candidat, compteur = base, 2
+        while autres.filter(slug=candidat).exists():
+            candidat = f"{base}-{compteur}"
+            compteur += 1
+        return candidat
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._slug_disponible()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.legende or self.fichier.name

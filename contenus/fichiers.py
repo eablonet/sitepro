@@ -25,8 +25,9 @@ class CheminMedia:
     def __call__(self, instance, nom_fichier):
         extension = Path(nom_fichier).suffix.lower()
         identifiant = getattr(instance, self.attribut)
-        return f"{self.dossier}/{identifiant}-{self.suffixe}{extension}"
-
+        nom = f"{identifiant}-{self.suffixe}" if self.suffixe else str(identifiant)
+        return f"{self.dossier}/{nom}{extension}"
+        
     def __eq__(self, autre):
         return (
             isinstance(autre, CheminMedia)
