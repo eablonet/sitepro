@@ -30,7 +30,7 @@
         <div class="dropdown-panel">
           {% for type_value, type_label in types_devoir_nav %}
             <a href="{% url 'contenus:liste_devoirs' %}?type={{ type_value }}" class="dropdown-panel__item">
-              <i class="ti ti-file"></i>
+              <i class="ti ti-clipboard-text"></i>
               {{ type_label }}
             </a>
           {% endfor %}
@@ -56,15 +56,15 @@
               Colloscope
             </a>
             <a href="{% url 'contenus:liste_programmes_colles' %}" class="dropdown-panel__item">
-                <i class="ti ti-file"></i>
+                <i class="ti ti-microphone-2"></i>
                 Programmes
             </a>
             <a href="{% url 'contenus:formules' %}" class="dropdown-panel__item">
-                <i class="ti ti-file"></i>
+                <i class="ti ti-bulb"></i>
                 Formules
             </a>
             <a href="{% url 'contenus:questions' %}" class="dropdown-panel__item">
-                <i class="ti ti-file"></i>
+                <i class="ti ti-tool"></i>
                 Questions de cours
             </a>
           </div>

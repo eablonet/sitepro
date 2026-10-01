@@ -10,14 +10,70 @@
 
 <div class="cartes-doc-grid">
     {% for tp in tp_liste %}
-        <article class="carte-doc">
-            <div class="carte-doc__header">
-                <h3 class="carte-doc__titre">{{ tp.titre }}</h3>
-                <div class="carte-doc__docs-principaux">
-                    <a href="{{ tp.fichier_sujet.url }}" class="doc-icone" title="Sujet">
-                        <i class="ti ti-file"></i>
-                        <span>Sujet</span>
-                    </a>
+    <article class="carte-doc">
+        <div class="carte-doc__header">
+            <h3 class="carte-doc__titre">{{ tp.titre }}</h3>
+        </div>
+        {% if tp.description %}
+            <p class="carte-doc__description">{{ tp.description|truncatewords:25|urlize }}</p>
+        {% endif %}
+        {% if tp.fichier_sujet %}
+            <div class="carte-doc__lies-liste">
+                <a href="{{ tp.fichier_sujet.url }}" class="carte-doc__lie-item">
+                <span class="carte-doc__lie-item-label">
+                    <i class="ti ti-file"></i>
+                    Sujet
+                </span>
+                <i class="ti ti-download"></i>
+                </a>
+            </div>
+        {% endif %}
+        {% if tp.fichier_corrige %}
+            <div class="carte-doc__lies-liste">
+                <a href="{{ tp.fichier_corrige.url }}" class="carte-doc__lie-item">
+                <span class="carte-doc__lie-item-label">
+                    <i class="ti ti-file"></i>
+                    Corrigé
+                </span>
+                <i class="ti ti-download"></i>
+                </a>
+            </div>
+        {% endif %}
+        {% if tp.fichier_python_sujet %}
+            <div class="carte-doc__lies-liste">
+                <a href="{{ tp.fichier_python_sujet.url }}" class="carte-doc__lie-item">
+                <span class="carte-doc__lie-item-label">
+                    <i class=" ti ti-brand-python "></i>
+                    eleve.py
+                </span>
+                <i class="ti ti-download"></i>
+                </a>
+            </div>
+        {% endif %}
+        {% if tp.fichier_python_corrige %}
+            <div class="carte-doc__lies-liste">
+                <a href="{{ tp.fichier_python_corrige.url }}" class="carte-doc__lie-item">
+                <span class="carte-doc__lie-item-label">
+                    <i class=" ti ti-brand-python "></i>
+                    prof.py
+                </span>
+                <i class="ti ti-download"></i>
+                </a>
+            </div>
+        {% endif %}
+            
+                
+                
+                
+                
+                
+                {% comment %} <div class="carte-doc__docs-principaux">
+                    
+                        <a href="{{ tp.fichier_sujet.url }}" class="doc-icone" title="Sujet">
+                            <i class="ti ti-file"></i>
+                            <span>Sujet</span>
+                        </a>
+                    {% endif %}
                     {% if tp.fichier_corrige %}
                         <a href="{{ tp.fichier_corrige.url }}" class="doc-icone" title="Corrigé">
                             <i class="ti ti-file"></i>
@@ -25,11 +81,22 @@
                         </a>
                     {% endif %}
                 </div>
-            </div>
+                <div class="carte-doc__docs-principaux">
+                    {% if tp.fichier_python_sujet %}
+                        <a href="{{ tp.fichier_python_sujet.url }}" class="doc-icone" title="Sujet">
+                            <i class="ti ti-file"></i>
+                            <span>eleve.py</span>
+                        </a>
+                    {% endif %}
+                    {% if tp.fichier_python_corrige %}
+                        <a href="{{ tp.fichier_python_corrige.url }}" class="doc-icone" title="Corrigé">
+                            <i class="ti ti-file"></i>
+                            <span>prof.py</span>
+                        </a>
+                    {% endif %}
+                
+            </div> {% endcomment %}
 
-            {% if tp.description %}
-                <p class="carte-doc__description">{{ tp.description|truncatewords:25|urlize }}</p>
-            {% endif %}
 
             {% if tp.themes.all %}
                 <div class="carte-doc__divider"></div>

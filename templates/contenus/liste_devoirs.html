@@ -40,23 +40,32 @@
                 <article class="carte-doc">
                     <div class="carte-doc__header">
                         <h3 class="carte-doc__titre">{{ devoir.titre }}</h3>
-                        <div class="carte-doc__docs-principaux">
-                            <a href="{{ devoir.fichier_sujet.url }}" class="doc-icone" title="Sujet">
-                                <i class="ti ti-file"></i>
-                                <span>Sujet</span>
-                            </a>
-                            {% if devoir.fichier_correction %}
-                                <a href="{{ devoir.fichier_correction.url }}" class="doc-icone" title="Correction">
-                                    <i class="ti ti-file"></i>
-                                    <span>Corrigé</span>
-                                </a>
-                            {% endif %}
-                        </div>
                     </div>
-
                     {% if devoir.themes.all %}
-                        <div class="carte-doc__divider"></div>
                         <p class="carte-doc__meta">{{ devoir.themes.all|join:", " }}</p>
+                        <div class="carte-doc__divider"></div>
+                    {% endif %}
+                    {% if devoir.fichier_correction %}
+                        <div class="carte-doc__lies-liste">
+                            <a href="{{ devoir.fichier_sujet.url }}" class="carte-doc__lie-item">
+                            <span class="carte-doc__lie-item-label">
+                                <i class="ti ti-clipboard-text"></i>
+                                Sujet
+                            </span>
+                            <i class="ti ti-download"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if devoir.fichier_correction %}
+                        <div class="carte-doc__lies-liste">
+                            <a href="{{ devoir.fichier_correction.url }}" class="carte-doc__lie-item">
+                            <span class="carte-doc__lie-item-label">
+                                <i class="ti ti-checklist"></i>
+                                Corrigé
+                            </span>
+                            <i class="ti ti-download"></i>
+                            </a>
+                        </div>
                     {% endif %}
                 </article>
             {% endfor %}
