@@ -64,6 +64,14 @@ class Theme(models.Model):
         default=0,
         help_text="Ordre d'affichage, 0 en premier"
     )
+    icone = models.CharField(
+        max_length=50,
+        default='file',
+        blank=True,
+        help_text="Nom d'une icône Tabler sans le préfixe « ti- ». "
+                  "Ex : telescope, cpu, flask, wave-sine, magnet. "
+                  "Catalogue sur tabler.io/icons"
+    )
     
     class Meta:
         ordering  = ['ordre', 'nom']
@@ -123,23 +131,27 @@ class Cours(models.Model):
     date_publication = models.DateTimeField(auto_now_add=True)
     publie = models.BooleanField(default=True)
 
-    # (nom du champ, libellé court affiché sur la vignette)
+    # (nom du champ, libellé affiché, icône Tabler sans le préfixe « ti- »)
     FICHIERS = [
-        ('fichier_cours_prof', "Cours prof"),
-        ('fichier_cours_eleve', "Cours élève"),
-        ('fichier_td_prof', "TD prof"),
-        ('fichier_td_eleve', "TD élève"),
-        ('fichier_manip', "Manip"),
+        ('fichier_cours_prof', "Fiche | avec corrigée", 'file-check'),
+        ('fichier_cours_eleve', "Fiche | version élève", 'file'),
+        ('fichier_td_prof', "TD | avec corrigé", 'file-check'),
+        ('fichier_td_eleve', "TD | version élève", 'file'),
+        ('fichier_manip', "Manip", 'microscope'),
     ]
 
     @property
     def fichiers_disponibles(self):
-        """Liste des fichiers réellement renseignés, dans l'ordre de FICHIERS."""
+        """Fichiers réellement renseignés, dans l'ordre de FICHIERS."""
         resultat = []
-        for nom_champ, libelle in self.FICHIERS:
+        for nom_champ, libelle, icone in self.FICHIERS:
             fichier = getattr(self, nom_champ)
             if fichier:
-                resultat.append({'fichier': fichier, 'libelle': libelle})
+                resultat.append({
+                    'fichier': fichier,
+                    'libelle': libelle,
+                    'icone': icone,
+                })
         return resultat
 
     class Meta:

@@ -25,7 +25,7 @@ class AnneScolaireAdmin(admin.ModelAdmin):
             
 @admin.register(Theme)
 class ThemeAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'ordre')
+    list_display = ('nom', 'ordre', 'icone')
     prepopulated_fields = {'slug': ('nom',)}
     ordering = ('ordre',)
     

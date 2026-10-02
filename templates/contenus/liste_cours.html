@@ -10,14 +10,17 @@
   <div class="chips">
     <a href="{% url 'contenus:liste_cours' %}" class="chip{% if not theme_actif %} chip--active{% endif %}">Tous</a>
     {% for theme in themes %}
-      <a href="?theme={{ theme.slug }}" class="chip{% if theme_actif == theme %} chip--active{% endif %}">{{ theme.nom }}</a>
+      <a href="?theme={{ theme.slug }}" class="chip{% if theme_actif == theme %} chip--active{% endif %}"><i class="ti ti-{{ theme.icone|default:'file' }}"></i> {{ theme.nom }}</a>
     {% endfor %}
   </div>
 
   {% for groupe in cours_par_theme %}
     <section class="theme-section">
-      <h2 class="section-title">{{ groupe.theme.nom }}</h2>
-      <div class="cartes-doc-grid">
+        <h2 class="section-title">
+            <i class="ti ti-{{ groupe.theme.icone|default:'file' }}"></i>
+            {{ groupe.theme.nom }}
+        </h2>
+        <div class="cartes-doc-grid">
         {% for cours in groupe.cours_liste %}
           <article class="carte-doc">
               <div class="carte-doc__header">
@@ -30,15 +33,15 @@
 
               {% if cours.fichiers_disponibles %}
                   <div class="carte-doc__lies-liste">
-                      {% for doc in cours.fichiers_disponibles %}
-                          <a href="{{ doc.fichier.url }}" class="carte-doc__lie-item">
-                              <span class="carte-doc__lie-item-label">
-                                  <i class="ti ti-file"></i>
-                                  {{ doc.libelle }}
-                              </span>
-                              <i class="ti ti-download"></i>
-                          </a>
-                      {% endfor %}
+                    {% for doc in cours.fichiers_disponibles %}
+                    <a href="{{ doc.fichier.url }}" class="carte-doc__lie-item">
+                        <span class="carte-doc__lie-item-label">
+                        <i class="ti ti-{{ doc.icone }}"></i>
+                        {{ doc.libelle }}
+                        </span>
+                        <i class="ti ti-download"></i>
+                    </a>
+                    {% endfor %}
                   </div>
               {% endif %}
 

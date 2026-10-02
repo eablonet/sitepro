@@ -12,7 +12,7 @@
         <div class="dropdown-panel">
           {% for theme in themes_nav %}
             <a href="{% url 'contenus:liste_cours' %}?theme={{ theme.slug }}" class="dropdown-panel__item">
-              <i class="ti ti-file"></i>
+              <i class="ti ti-{{ theme.icone|default:'file' }}"></i>
               {{ theme.nom }}
             </a>
           {% empty %}
