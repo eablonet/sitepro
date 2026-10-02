@@ -101,7 +101,6 @@ def _contexte(request):
     debut = max(0, min(debut, max(0, len(semaines) - TAILLE_FENETRE)))
     fenetre = semaines[debut:debut + TAILLE_FENETRE]
 
-    # rubriques_valides = {r.value for r in EntreeCahier.Rubrique}
 
     contexte_semaines = []
     for semaine in fenetre:

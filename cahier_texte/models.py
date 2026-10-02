@@ -71,14 +71,14 @@ class EntreeCahier(models.Model):
 
     class Rubrique(models.TextChoices):
         COURS = "COURS", "Cours"
-        IC = "IC", "Interrogation de cours"
+        IC = "IC", "IC"
         TD = "TD", "TD"
         TP = "TP", "TP"
-        AP = "AP", "Accompagnement personnalisé"
-        DS = "DS", "Devoir surveillé"
-        DM = "DM", "Devoir maison"
-        CC = "CC", "Cahier de calcul"
-        PC = "PC", "Programme de colle"
+        AP = "AP", "AP"
+        DS = "DS", "DS"
+        DM = "DM", "DM"
+        CC = "CC", "CC"
+        PC = "PC", "PC"
 
     class Jour(models.IntegerChoices):
         LUNDI = 0, "lundi"

@@ -78,7 +78,7 @@ def colloscope(request):
     groupes = GroupeColle.objects.all()
     colleurs = Colleur.objects.all()
     matieres = sorted(
-        m for m in colleurs.values_list('matiere', flat=True).distinct() if m
+        m for m in colleurs.order_by().values_list('matiere', flat=True).distinct() if m
     )
 
     passages = Passage.objects.select_related(
