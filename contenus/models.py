@@ -415,6 +415,7 @@ class CahierCalcul(models.Model):
     )
     fichier_corrige = models.FileField(
         upload_to=CheminMedia('cahier-calcul/', 'correction'),
+        storage=stockage_ecrasement,
         blank=True,
         null=True
     )
@@ -456,7 +457,16 @@ class DocumentPermanent(models.Model):
         help_text="Un seul document par type."
     )
     fichier = models.FileField(
-        upload_to='colle/documents/'
+        upload_to='colle/documents/',
+        storage=stockage_ecrasement,
+        blank=True,
+        null=True
+    )
+    fichier_vide = models.FileField(
+        upload_to='colle/documents/',
+        storage=stockage_ecrasement,
+        blank=True,
+        null=True
     )
     date_maj = models.DateTimeField(auto_now=True)
     annee_scolaire = models.ForeignKey(

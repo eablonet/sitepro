@@ -12,12 +12,6 @@
             <p class="page-intro">Mis à jour le {{ document.date_maj|date:"d F Y" }}.</p>
         {% endif %}
     </div>
-    {% if document %}
-        <a href="{{ document.fichier.url }}" class="bouton" download>
-            <i class="ti ti-download"></i>
-            Télécharger
-        </a>
-    {% endif %}
 </div>
 
 {% if document %}
@@ -27,6 +21,20 @@
             L'aperçu ne s'affiche pas sur tous les appareils. Utiliser le boutton télécharger.
         </p>
     </div>
+    <div class="doc-entete">
+    {% if document.fichier %}
+        <a href="{{ document.fichier.url }}" class="bouton" download>
+            <i class="ti ti-download"></i>
+            Télécharger version complète
+        </a>
+    {% endif %}
+    {% if document.fichier_vide %}
+        <a href="{{ document.fichier_vide.url }}" class="bouton" download>
+            <i class="ti ti-download"></i>
+            Télécharger version d'entrainement
+        </a>
+    {% endif %}
+</div>
 {% else %}
     <p>Ce document n'est pas encore disponible.</p>
 {% endif %}
