@@ -133,7 +133,7 @@ class Cours(models.Model):
 
     # (nom du champ, libellé affiché, icône Tabler sans le préfixe « ti- »)
     FICHIERS = [
-        ('fichier_cours_prof', "Fiche | avec corrigée", 'file-check'),
+        ('fichier_cours_prof', "Fiche | avec corrigé", 'file-check'),
         ('fichier_cours_eleve', "Fiche | version élève", 'file'),
         ('fichier_td_prof', "TD | avec corrigé", 'file-check'),
         ('fichier_td_eleve', "TD | version élève", 'file'),
