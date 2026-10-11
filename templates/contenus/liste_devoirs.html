@@ -45,7 +45,7 @@
                         <p class="carte-doc__meta">{{ devoir.themes.all|join:", " }}</p>
                         <div class="carte-doc__divider"></div>
                     {% endif %}
-                    {% if devoir.fichier_correction %}
+                    {% if devoir.fichier_sujet %}
                         <div class="carte-doc__lies-liste">
                             <a href="{{ devoir.fichier_sujet.url }}" class="carte-doc__lie-item">
                             <span class="carte-doc__lie-item-label">
