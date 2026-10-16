@@ -12,7 +12,7 @@ replié dans un <details> ouvert à la demande.
 
   <details class="ct-edition">
     <summary class="ct-edition__bascule"><i class="ti ti-pencil" aria-hidden="true"></i> Modifier</summary>
-    <form method="post" action="{% url 'cahier_texte:entree_modifier' entree.pk %}" class="ct-formulaire">
+    <form method="post" action="{% url 'cahier_edition:entree_modifier' entree.pk %}" class="ct-formulaire">
       {% csrf_token %}
       <input type="hidden" name="retour" value="{{ request.get_full_path }}">
       {{ entree.formulaire.as_p }}
