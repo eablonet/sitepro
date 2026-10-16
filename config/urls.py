@@ -24,8 +24,11 @@ from django.conf.urls.static import static
 from cahier_texte import views as cahier_views
 
 
+ADMIN_URL = config("ADMIN_URL", default="admin/")
+
 urlpatterns = [
-    path(config("ADMIN_URL", default="admin/"), admin.site.urls),
+    path(f"{ADMIN_URL}cahier/", include("cahier_texte.urls_edition")),
+    path(ADMIN_URL, admin.site.urls),
     path('', cahier_views.cahier_texte, name="accueil"),
     path('', include('colloscope.urls')),
     path('', include('contenus.urls')),
